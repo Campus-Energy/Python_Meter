@@ -59,15 +59,19 @@ class PQMII ():
         connection, client = self.connectToMeter ()
         for measurement in self.meter_params.measurements:
             #the argument for reading_holding_registers should hold (address, coil, slave)
-            registers = client.read_holding_registers ( measurement )
-            A = registers[0]
-            B = registers[1]
+           
 
-            val = (A*2^16) + B
+    def bitData32 ( self ):
+        registers = client.read_holding_registers ( measurement )
+        A = registers[0]
+        B = registers[1]
 
-            if A > 32767:
-                    val = val - 2^32
+        val = (A*2^16) + B
 
-            val_kw = val*0.1
+        if A > 32767:
+            val = val - 2^32
+
+        val_kw = val*0.1
+    
 
 PQMII( metername='aloha', metertype=meterType.PQMII ,host = 'host', measurements=['time','kw'], port = 4, addressBook={} )
