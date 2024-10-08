@@ -1,11 +1,5 @@
 from pymodbus.client import ModbusTcpClient
-
-def uncomplement ( twosComplement :str ):
-                twosComplementBinary = format ( abs( ~ ( int( twosComplement ) - 1 ) ), '016b' )
-                firstByte = ( int ( twosComplementBinary, base = 2 ) & 0b1111111100000000 ) >> 8
-                secondByte = int ( twosComplementBinary, base = 2 ) & 0b0000000011111111
-                uncomplementedNum = str ( firstByte ) + str ( secondByte )
-                return uncomplementedNum
+from uncomplement import uncomplement 
 
 client = ModbusTcpClient ( '10.181.69.131', port=502, timeout=1 )
 connection = client.connect()
