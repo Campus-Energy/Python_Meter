@@ -6,12 +6,13 @@ class PQMII ():
 
     def __init__(
         self,
-        metertype:str,
-        metername:str,
-        host:str,
-        measurements:list,
-        port:int,
-        addressBook: dict
+        metertype: str,
+        metername: str,
+        host: str,
+        measurements: list,
+        port: int,
+        addressBook: dict,
+        slave: int
     ) -> None:
         
         """Initialize new meter."""
@@ -24,7 +25,8 @@ class PQMII ():
                 port = port,
                 #thinking of using a Json to hold all the register addresses.
                 #code will load the Json and use that to retrieve data.
-                address_book = addressBook
+                address_book = addressBook,
+                slave = slave
             )
     
     def connectToMeter ( self ):
@@ -56,7 +58,8 @@ class PQMII ():
     def getData ( self ):
         connection, client = self.connectToMeter ()
         for measurement in self.meter_params.measurements:
-            registers = client.read_holding_registers ( )
+            #the argument for reading_holding_registers should hold (address, coil, slave)
+            registers = client.read_holding_registers ( measurement )
             A = registers[0]
             B = registers[1]
 
@@ -67,4 +70,4 @@ class PQMII ():
 
             val_kw = val*0.1
 
-PQMII( metername='aloha', metertype=PQMII ,host = 'host', measurements=['time','kw'], port = 4, addressBook={} )
+PQMII( metername='aloha', metertype=meterType.PQMII ,host = 'host', measurements=['time','kw'], port = 4, addressBook={} )

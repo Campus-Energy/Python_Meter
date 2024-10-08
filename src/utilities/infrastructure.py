@@ -14,5 +14,6 @@ class meterParams:
     meter_type: meterType | None = None
     measurements: list | None = None
     host: str = "localhost" 
-    port: int = 0
+    port: int = 502
     address_book: dict | None = None
+    slave: int = 1
