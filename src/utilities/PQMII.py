@@ -1,6 +1,7 @@
 from pymodbus.client import ModbusTcpClient
 from infrastructure import meterParams, meterType
 from uncomplement import uncomplement
+import errors
 
 class PQMII ():
 
@@ -33,6 +34,14 @@ class PQMII ():
         client = ModbusTcpClient ( self.meter_params.host, port=self.meter_params.port, timeout=1 )
         connection = client.connect()
         
+        # try: 
+        #     client.connect()
+        #     if connection is False:
+        #         raise errors.connectionError("Connection Error")
+
+        # except errors.connectionError:
+        #     print ( "Program failed to connect to meter." )
+
         if connection:
             print ( "Connection sucessful!" )
             return connection, client
@@ -57,21 +66,25 @@ class PQMII ():
 
     def getData ( self ):
         connection, client = self.connectToMeter ()
-        for measurement in self.meter_params.measurements:
+        #for measurement in self.meter_params.measurements:
             #the argument for reading_holding_registers should hold (address, coil, slave)
            
 
     def bitData32 ( self ):
-        registers = client.read_holding_registers ( measurement )
-        A = registers[0]
-        B = registers[1]
+        connection, client = self.connectToMeter ()
+        if not connection:
+            return "Error, connection not found."
+        else:
+            bit32Data = client.read_holding_registers ( address=0x0230, count=4, slave=1 )
+            upper16 = bit32Data[0]
+            lower16 = bit32Data[1]
 
-        val = (A*2^16) + B
+            combined32 = (upper16*2^16) + lower16
 
-        if A > 32767:
-            val = val - 2^32
+            if upper16 > 32767:
+                combined32 = combined32 - 2^32
 
-        val_kw = val*0.1
+            return combined32*0.1
     
 
 PQMII( metername='aloha', metertype=meterType.PQMII ,host = 'host', measurements=['time','kw'], port = 4, addressBook={} )

@@ -17,3 +17,4 @@ class meterParams:
     port: int = 502
     address_book: dict | None = None
     slave: int = 1
+
