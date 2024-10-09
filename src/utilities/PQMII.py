@@ -84,7 +84,7 @@ class PQMII ():
             if upper16 > 32767:
                 combined32 = combined32 - 2^32
 
-            return combined32*0.1
+            return combined32
     
 
 PQMII( metername='aloha', metertype=meterType.PQMII ,host = 'host', measurements=['time','kw'], port = 4, addressBook={} )
