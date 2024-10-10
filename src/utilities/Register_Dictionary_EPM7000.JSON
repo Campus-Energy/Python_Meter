@@ -1,0 +1,25 @@
+{
+    "Registers":{
+        "3 phase watt total":[{
+            "Register": "3000",
+            "Count": 2,
+            "Unit": "w",
+            "Data_Length": 32}],
+        "3 Phase Positive Real Energy Used ":[{
+            "Register": "3032",
+            "Count": 2,
+            "Unit": "wh",
+            "Data_Length": 32}],
+        "Current_Date_and_Time":[{
+            "Register": "4508",
+            "Count": 3,
+            "Unit": "Day/Month/Year",
+            "Data_Length": 48}],
+        "Day_Of_Week":[{
+            "Register": "4512",
+            "Count": 1,
+            "Unit": "1-7",
+            "Data_Length": 16}]
+    }
+}
+
