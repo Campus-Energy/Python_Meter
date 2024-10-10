@@ -5,7 +5,7 @@
             "Count": 2,
             "Unit": "w",
             "Data_Length": 32}],
-        "3 Phase Positive Real Energy Used ":[{
+        "Total Watt Hour ":[{
             "Register": "3032",
             "Count": 2,
             "Unit": "wh",
