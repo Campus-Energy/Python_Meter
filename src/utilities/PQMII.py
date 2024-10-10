@@ -3,7 +3,9 @@ from infrastructure import meterParams, meterType
 from uncomplement import uncomplement
 import errors
 
+
 class PQMII ():
+    """Generic class for storing information for PQMII meters"""
 
     def __init__(
         self,
@@ -87,4 +89,4 @@ class PQMII ():
             return combined32
     
 
-PQMII( metername='aloha', metertype=meterType.PQMII ,host = 'host', measurements=['time','kw'], port = 4, addressBook={} )
+# PQMII( metername='aloha', metertype=meterType.PQMII ,host = 'host', measurements=['time','kw'], port = 4, addressBook={} )
