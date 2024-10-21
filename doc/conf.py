@@ -20,7 +20,8 @@ author = 'Campus Energy'
 
 extensions = ['sphinx.ext.duration',
     'sphinx.ext.doctest',
-    'sphinx.ext.autodoc',]
+    'sphinx.ext.autodoc',
+    'sphinx.ext.todo',]
 
 # autodoc_default_options = {
 #     'members': 'var1, var2',

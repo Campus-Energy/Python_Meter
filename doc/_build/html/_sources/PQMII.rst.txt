@@ -2,5 +2,8 @@ PQMII module
 ============
 
 .. automodule:: PQMII
-   :members:
-   :show-inheritance:
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:
+  

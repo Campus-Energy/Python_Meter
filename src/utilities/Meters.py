@@ -95,9 +95,10 @@ class Meter ():
     def getDatetime ( self ):
         """Retrieves the meter's current datetime stored in its internal clock
 
-       
         :return: The complete datetime in the following format: yy-mm-dd hh:mm
         :rtype: str
+        
+        .. note:: Todo: Restructure this to compensate for the different addresses for the different meters. Write a function to find the address given the metertype
         """
         connection, client = self.connectToMeter ()
         if not connection:

@@ -4,7 +4,7 @@ utilities
 .. toctree::
    :maxdepth: 4
 
-   PQMII
+   Meters
    dateTime4Modbus
    errors
    infrastructure

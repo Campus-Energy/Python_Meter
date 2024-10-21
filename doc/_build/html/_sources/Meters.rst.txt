@@ -1,9 +1,11 @@
-PQMII module
-============
+Meters module
+=============
 
-.. automodule:: PQMII
+.. automodule:: Meters
     :members:
     :undoc-members:
     :inherited-members:
     :show-inheritance:
+
+
   
