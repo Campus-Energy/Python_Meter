@@ -8,7 +8,7 @@ import Meters
 # # Print the data
 # print(data["Registers"]["3 phase watt total"][0]["Register"])
 
-def Read_data(  targetMeter:Meters.Meter, Data_Value):
+def Read_data( targetMeter:Meters.Meter, Data_Value):
 
     if targetMeter.metertype == "PQMII":
         with open(r'Register_Dictionary_PQMII.JSON', 'r') as file:
