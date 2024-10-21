@@ -1,0 +1,25 @@
+{
+    "Registers":{
+        "3 phase real power":[{
+            "Register": "0x2F0",
+            "Count": 2,
+            "Unit": "kw",
+            "Data_Length": 32}],
+        "3 Phase Positive Real Energy Used ":[{
+            "Register": "0x03D0",
+            "Count": 2,
+            "Unit": "kwh",
+            "Data_Length": 32}],
+        "Hour/Min":[{
+            "Register": "0x230",
+            "Count": 1,
+            "Unit": "Hour/Min",
+            "Data_Length": 16}],
+        "Month/Day":[{
+            "Register": "0x232",
+            "Count": 1,
+            "Unit": "Month/Day",
+            "Data_Length": 16}]
+    }
+}
+
