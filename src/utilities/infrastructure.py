@@ -6,6 +6,7 @@ class meterType(Enum):
 
     EPM7000 = 1
     PQMII = 2
+    EPM4500 = 3
 
 @dataclasses.dataclass
 class meterParams:

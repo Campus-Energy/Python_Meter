@@ -2,7 +2,7 @@ from pymodbus.client import ModbusTcpClient
 from infrastructure import meterParams, meterType
 from uncomplement import uncomplement
 import errors
-
+import Read_json as j
 
 class Meter ():
     """ A class dedicated to programming and storing information an a specific PQMII meter.
@@ -10,7 +10,7 @@ class Meter ():
         :meta public:
 
         :param metertype: The type of meter associated with this class
-        :type metertype: str
+        :type metertype: meterType
         :param metername: The name of the meter associated with this class
         :type metername: str
         :param host: The unique IP address associated with the meter
@@ -27,7 +27,7 @@ class Meter ():
     
     def __init__(
         self,
-        metertype: str,
+        metertype: meterType,
         metername: str,
         host: str,
         measurements: list,
@@ -35,25 +35,6 @@ class Meter ():
         addressBook: dict,
         slave: int
     ) -> None:
-        """The basic constructor for this class
-
-        :meta public:
-
-        :param metertype: The type of meter associated with this class
-        :type metertype: str
-        :param metername: The name of the meter associated with this class
-        :type metername: str
-        :param host: The unique IP address associated with the meter
-        :type host: str
-        :param measurements: A list of measurements the user would like this meter to record
-        :type measurements: list
-        :param port: The port associated with the meter, defaults to 502
-        :type port: int
-        :param addressBook: A JSON file that holds the modbus memory map—the register addresses of every measurement
-        :type addressBook: dict
-        :param slave: The slave number associated with this meter or submeter
-        :type slave: int
-        """
 
         if not hasattr ( self, "meter_params"):
             self.meter_params = meterParams (
@@ -92,6 +73,26 @@ class Meter ():
             print ( "Connection unsucessful." )
             return connection, client
 
+    def getData ( self, measurements: list ):
+        connection, client = self.connectToMeter ()
+
+        for measurement in measurements:
+
+            match ( self.meter_params.meter_type ):
+                #This currently will not work as it does not account for the different lengts of data ( 32 or 16 )
+                case meterType.EPM7000:
+                    register = j.Read_data ('EPM7000', measurement)
+                    client.read_holding_registers ( address = register[0], count = register[1],  )
+                case meterType.PQMII:
+                    registerAddress = j.Read_data ('PQMII', measurement)
+                case meterType.EPM4500:
+                    registerAddress = j.Read_data ('EPM4500', measurement)
+            
+        
+        #for measurement in self.meter_params.measurements:
+            #the argument for reading_holding_registers should hold (address, coil, slave)
+        return 0 #temporary value to make errors shut up.
+
     def getDatetime ( self ):
         """Retrieves the meter's current datetime stored in its internal clock
 
@@ -104,6 +105,7 @@ class Meter ():
         if not connection:
             return "Error, connection not found."
         else:
+            clockAddress = self.getData ( self, 'datetime' )
             clock = client.read_holding_registers ( address=0x0230, count=4, slave=1 )
             rawDatetime = clock.registers
 
@@ -114,11 +116,6 @@ class Meter ():
             datetime = str(year)+'-'+(str(date[0]).zfill(2))+'-'+(str(date[1]).zfill(2)) + ' ' + (str(time[0]).zfill(2))+':'+(str(time[1]).zfill(2))
             return datetime
 
-    def getData ( self ):
-        connection, client = self.connectToMeter ()
-        #for measurement in self.meter_params.measurements:
-            #the argument for reading_holding_registers should hold (address, coil, slave)
-           
 
     def bitData32 ( self ):
         connection, client = self.connectToMeter ()
