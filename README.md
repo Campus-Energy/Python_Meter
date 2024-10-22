@@ -9,3 +9,6 @@
     - Insert a space after an opening parentheses and before a closing parentheses: getNewData ( param )
     - Do not use letters as itterators
     - Make debug statements descriptive and meaningful
+
+### **DOCUMENTATION**
+    Documentation can be accessed by navigating to root/doc/_build/html/index.html
