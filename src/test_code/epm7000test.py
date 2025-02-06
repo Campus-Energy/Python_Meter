@@ -60,8 +60,20 @@ file_path = [r"C:\Users\Admin\Desktop\Test\Admin_Serv_2.csv",r"C:\Users\Admin\De
 
 i = 0
 
-for x in ip_address["ips"]:
-    client = ModbusTcpClient(x,port=502,timeout=1)
+
+def pullData( ip, slave_id ):
+    """
+    Pulls data from the specified ip and slase addresses
+
+    Args:
+        ip: ip address of the device
+        slave: slave address of the device
+
+    Returns:
+        pandas df: The data frame containing the 15 minute interval data 
+    """
+   
+    client = ModbusTcpClient(ip,port=502,timeout=1)
     connection = client.connect()
 
     #Datetime
@@ -70,44 +82,36 @@ for x in ip_address["ips"]:
 
 
     #kw
-    result = client.read_holding_registers(address=1017,count=2,slave=ip_address["slaves"][i])
+    result = client.read_holding_registers(address=1017,count=2,slave=slave_id)
     val_kw = result.registers
-    # print(cft_float)
-    # val_kw = convert_modbus_to_float(cft_float)/1000
 
-
-    #kwh_recieved
-    result3 = client.read_holding_registers(address=1499,count=2,slave=ip_address["slaves"][i])
-    sint32_value_r = result3.registers
-    val_kwh_recieved = sint32_to_decimal_xy(sint32_value_r[0], sint32_value_r[1])
+    # #kwh_recieved
+    # result3 = client.read_holding_registers(address=1499,count=2,slave=slave_id)
+    # sint32_value_kwhr = result3.registers
+    # val_kwh_recieved = sint32_to_decimal_xy(sint32_value_r[0], sint32_value_r[1])
     
 
 
-    #kwh_delivered
-    result4 = client.read_holding_registers(address=1501,count=2,slave=ip_address["slaves"][i])
-    sint32_value_d = result4.registers
-    val_kwh_delivered = sint32_to_decimal_xy(sint32_value_d[0], sint32_value_d[1])
+    # #kwh_delivered
+    # result4 = client.read_holding_registers(address=1501,count=2,slave=slave_id)
+    # sint32_value_d = result4.registers
+    # val_kwh_delivered = sint32_to_decimal_xy(sint32_value_d[0], sint32_value_d[1])
 
-    #kwh_net
-    result5 = client.read_holding_registers(address=1503,count=2,slave=ip_address["slaves"][i])
-    sint32_value_n = result5.registers
-    val_kwh_net = sint32_to_decimal_xy(sint32_value_n[0], sint32_value_n[1])
+    # #kwh_net
+    # result5 = client.read_holding_registers(address=1503,count=2,slave=slave_id)
+    # sint32_value_n = result5.registers
+    # val_kwh_net = sint32_to_decimal_xy(sint32_value_n[0], sint32_value_n[1])
 
 
     #kwh_total
-    result2 = client.read_holding_registers(address=1505,count=2,slave=ip_address["slaves"][i])
+    result2 = client.read_holding_registers(address=1505,count=2,slave=slave_id)
     sint32_value = result2.registers
     val_kwh_total = sint32_to_decimal_xy(sint32_value[0], sint32_value[1])
 
-
-
-    #Define the variables containing the values to append
+ #Define the variables containing the values to append
     new_values = {
         "Datetime": formatted_datetime,
         "3_phase_Kw_total": val_kw,
-        "Kwh_recieved": val_kwh_recieved,
-        "Kwh_delivered": val_kwh_delivered,
-        "Kwh_net": val_kwh_net,
         "Kwh_total": val_kwh_total
         
     }
@@ -127,5 +131,75 @@ for x in ip_address["ips"]:
     client.close()
     df.to_csv(file_path[i], index=False)
 
-    i = i + 1
+
+    return df
+
+# for x in ip_address["ips"]:
+    # client = ModbusTcpClient(x,port=502,timeout=1)
+    # connection = client.connect()
+
+    # #Datetime
+    # current_datetime = datetime.now()
+    # formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+
+
+    # #kw
+    # result = client.read_holding_registers(address=1017,count=2,slave=ip_address["slaves"][i])
+    # val_kw = result.registers
+    # # print(cft_float)
+    # # val_kw = convert_modbus_to_float(cft_float)/1000
+
+
+    # #kwh_recieved
+    # result3 = client.read_holding_registers(address=1499,count=2,slave=ip_address["slaves"][i])
+    # sint32_value_r = result3.registers
+    # val_kwh_recieved = sint32_to_decimal_xy(sint32_value_r[0], sint32_value_r[1])
+    
+
+
+    # #kwh_delivered
+    # result4 = client.read_holding_registers(address=1501,count=2,slave=ip_address["slaves"][i])
+    # sint32_value_d = result4.registers
+    # val_kwh_delivered = sint32_to_decimal_xy(sint32_value_d[0], sint32_value_d[1])
+
+    # #kwh_net
+    # result5 = client.read_holding_registers(address=1503,count=2,slave=ip_address["slaves"][i])
+    # sint32_value_n = result5.registers
+    # val_kwh_net = sint32_to_decimal_xy(sint32_value_n[0], sint32_value_n[1])
+
+
+    # #kwh_total
+    # result2 = client.read_holding_registers(address=1505,count=2,slave=ip_address["slaves"][i])
+    # sint32_value = result2.registers
+    # val_kwh_total = sint32_to_decimal_xy(sint32_value[0], sint32_value[1])
+
+
+
+    # #Define the variables containing the values to append
+    # new_values = {
+    #     "Datetime": formatted_datetime,
+    #     "3_phase_Kw_total": val_kw,
+    #     "Kwh_recieved": val_kwh_recieved,
+    #     "Kwh_delivered": val_kwh_delivered,
+    #     "Kwh_net": val_kwh_net,
+    #     "Kwh_total": val_kwh_total
+        
+    # }
+
+    # # Check if the CSV file exists
+    # if not os.path.exists(file_path[i]):
+    #     # Create an empty DataFrame with the specified columns if the file doesn't exist
+    #     df = pd.DataFrame(columns=["Datetime", "3_phase_Kw_total","Kwh_recieved","Kwh_delivered","Kwh_net", "Kwh_total"])
+    #     df.to_csv(file_path[i], index=False)
+    #     # print(f"File '{file_path}' did not exist. Created an empty CSV file.")
+    # else:
+    #     # Load the existing DataFrame
+    #     df = pd.read_csv(file_path[i])
+
+    # # Append the new values as a new row using pd.concat
+    # df = pd.concat([df, pd.DataFrame([new_values])], ignore_index=True)
+    # client.close()
+    # df.to_csv(file_path[i], index=False)
+
+    # i = i + 1
 
