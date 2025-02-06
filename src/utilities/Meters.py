@@ -5,7 +5,8 @@ import errors
 import Read_json as j
 
 class Meter ():
-    """ A class dedicated to programming and storing information an a specific PQMII meter.
+    """ A generic class dedicated to programming and storing information on one of several types of meters. This loads in json config files to determine
+        what type of meter it's connected to and how to read and interprit the meter's stored data.
 
         :meta public:
 
@@ -118,6 +119,12 @@ class Meter ():
 
 
     def bitData32 ( self ):
+        """Retrieves the two raw 16-bit values from two registers and combines them into a 32-bit data entry.
+
+       
+        :return: The combined 32-bit data from the two corresponding registers
+        :rtype: str
+        """
         connection, client = self.connectToMeter ()
         if not connection:
             return "Error, connection not found."

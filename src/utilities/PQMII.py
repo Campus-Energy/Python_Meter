@@ -120,6 +120,12 @@ class Meter ():
            
 
     def bitData32 ( self ):
+        """Retrieves the two raw 16-bit values from two registers and combines them into a 32-bit data entry.
+
+       
+        :return: The combined 32-bit data from the two corresponding registers
+        :rtype: str
+        """
         connection, client = self.connectToMeter ()
         if not connection:
             return "Error, connection not found."
@@ -134,6 +140,9 @@ class Meter ():
                 combined32 = combined32 - 2^32
 
             return combined32
+        
+
+
     
 
 # PQMII( metername='aloha', metertype=meterType.PQMII ,host = 'host', measurements=['time','kw'], port = 4, addressBook={} )
