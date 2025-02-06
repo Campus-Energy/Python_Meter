@@ -1,4 +1,4 @@
-import pymodbus
+from pymodbus.client import ModbusTcpClient
 import pandas as pd
 
 def pullData(ip, slave_id=1, port_id=502,register_count=2):
@@ -20,7 +20,7 @@ def pullData(ip, slave_id=1, port_id=502,register_count=2):
     # if connection:
     #     print("Connection success")
 
-    
+
     result = client.read_holding_registers(address=0x02F0,count=register_count,slave=slave_id)
     #The values will be stored in a list with a length depending on your count
     registers = result.registers
