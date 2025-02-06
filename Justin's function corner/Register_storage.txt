@@ -1,0 +1,11 @@
+PQMII:
+    kw - 0x02F0
+    kwh - 0x03D0
+    kwh_demand - 0x0404
+
+EPM7000:
+    kw - 1017
+    kwh_recieved - 1499
+    kwh_delivered - 1501
+    kwh_net - 1503
+    kwh_total - 1505
