@@ -2,6 +2,7 @@ import dataclasses
 from enum import Enum
 from datetime import datetime
 import os
+import json
 import pandas as pd
 
 
@@ -22,6 +23,22 @@ class meterParams:
     port: int = 502
     address_book: dict | None = None
     slave: int = 1
+
+def Read_data( targetMeter:str, Data_Value):
+    #make this a match/case statement
+    if targetMeter == 'PQMII':
+        with open(r'Register_Dictionary_PQMII.JSON', 'r') as file:
+            data = json.load(file)
+    elif targetMeter == 'EPM7000':
+        with open(r'Register_Dictionary_EPM7000.JSON', 'r') as file:
+            data = json.load(file)
+
+    return data["Registers"][Data_Value][0], data["Registers"][Data_Value][1]
+    
+
+    #change this to return the list of data in the json entry: address, coils, units, etc.
+    return x
+
 
 def floatConversion(data):
     """Decodes a floating-point value from two Modbus registers based on the IEEE 754 single-precision format.
