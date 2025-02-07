@@ -27,3 +27,5 @@ def pullData(ip, slave_id=1, port_id=502,register_count=2):
 
     return registers
 
+
+print("hello world")

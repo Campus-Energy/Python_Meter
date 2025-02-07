@@ -8,6 +8,7 @@ def PQMConversion(data):
     Returns:
         float: The interpreted floating-point value.
     """
+    #check PQMII manual for math
     
     A = data[0]
     B = data[1]
