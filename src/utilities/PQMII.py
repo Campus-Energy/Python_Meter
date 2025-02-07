@@ -1,6 +1,5 @@
 from pymodbus.client import ModbusTcpClient
-from infrastructure import meterParams, meterType
-from uncomplement import uncomplement
+from infrastructure import meterParams, meterType, uncomplement, Read_data
 import errors
 
 
@@ -113,13 +112,21 @@ class Meter ():
             datetime = str(year)+'-'+(str(date[0]).zfill(2))+'-'+(str(date[1]).zfill(2)) + ' ' + (str(time[0]).zfill(2))+':'+(str(time[1]).zfill(2))
             return datetime
 
-    def getData ( self ):
+    def getData ( self, measurement ):
         connection, client = self.connectToMeter ()
-        #for measurement in self.meter_params.measurements:
-            #the argument for reading_holding_registers should hold (address, coil, slave)
+        registerAddress, count = Read_data ('PQMII', measurement)
+        rawData = client.read_holding_registers ( address=registerAddress, count=count, slave=1 )
+        return rawData
+        #the argument for reading_holding_registers should hold (address, coil, slave)
            
 
     def bitData32 ( self ):
+        """Retrieves the two raw 16-bit values from two registers and combines them into a 32-bit data entry.
+
+       
+        :return: The combined 32-bit data from the two corresponding registers
+        :rtype: str
+        """
         connection, client = self.connectToMeter ()
         if not connection:
             return "Error, connection not found."
@@ -134,6 +141,9 @@ class Meter ():
                 combined32 = combined32 - 2^32
 
             return combined32
+        
+
+
     
 
 # PQMII( metername='aloha', metertype=meterType.PQMII ,host = 'host', measurements=['time','kw'], port = 4, addressBook={} )
