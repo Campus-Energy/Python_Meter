@@ -1,6 +1,6 @@
 from pymodbus.client import ModbusTcpClient
-from infrastructure import meterParams, meterType, uncomplement, Read_data
-import errors
+from utilities.infrastructure import meterParams, meterType, uncomplement, Read_data
+import utilities.errors
 
 
 class Meter ():
