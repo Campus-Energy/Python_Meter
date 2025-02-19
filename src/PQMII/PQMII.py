@@ -3,7 +3,7 @@ from utilities.infrastructure import meterParams, meterType, uncomplement, Read_
 import utilities.errors
 
 
-class Meter ():
+class PQMII ():
     """ A class dedicated to programming and storing information an a specific PQMII meter.
 
         :meta public:
