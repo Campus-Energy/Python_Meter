@@ -1,4 +1,4 @@
-from PQMII.PQMII_module import Meter
+from PQMII.PQMII_module import PQM_Meter
 
 def main():
     print("Hello World!")
