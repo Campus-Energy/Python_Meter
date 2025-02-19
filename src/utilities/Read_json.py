@@ -1,4 +1,5 @@
 import json
+import os
 
 
 # Open and read the JSON file
@@ -9,13 +10,19 @@ import json
 # print(data["Registers"]["3 phase watt total"][0]["Register"])
 
 def Read_data( targetMeter:str, Data_Value):
-    #make this a match/case statement
+    base_path = os.path.dirname(os.path.abspath(__file__))
+
     if targetMeter == 'PQMII':
-        with open(r'Register_Dictionary_PQMII.JSON', 'r') as file:
-            data = json.load(file)
+        file_path = os.path.join(base_path, 'Register_Dictionary_PQMII.JSON')
     elif targetMeter == 'EPM7000':
-        with open(r'Register_Dictionary_EPM7000.JSON', 'r') as file:
-            data = json.load(file)
+        file_path = os.path.join(base_path, 'Register_Dictionary_EPM7000.JSON')
+    else:
+        raise ValueError(f"Unknown targetMeter: {targetMeter}")
+
+
+    #make this a match/case statement
+    with open(file_path, 'r') as file:
+        data = json.load(file)
 
     Value_Holder = []
 
