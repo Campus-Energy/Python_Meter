@@ -1,11 +1,10 @@
 import utilities
 
-import utilities.Meters
-import utilities.infrastructure
 
-aloha = utilities.Meters( metername='aloha', metertype=utilities.infrastructure.meterType.PQMII ,host = 'host', measurements=['time','kw'], port = 4, addressBook={})
+halealoha = utilities.Meters.Meter( metername='aloha', slave=1, metertype=utilities.infrastructure.meterType.PQMII, host = 'host', measurements=['time','kw'], port = 4)
 def main():
-    print(aloha.metername)
+    print(halealoha.meter_params.meter_name)
+    halealoha.getData( )
 
 if __name__ == "__main__":
     main()

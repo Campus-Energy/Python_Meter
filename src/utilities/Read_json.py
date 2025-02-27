@@ -11,10 +11,10 @@ import json
 def Read_data( targetMeter:str, Data_Value):
     #make this a match/case statement
     if targetMeter == 'PQMII':
-        with open(r'Register_Dictionary_PQMII.JSON', 'r') as file:
+        with open(r'utilities/Register_Dictionary_PQMII.json', 'r') as file:
             data = json.load(file)
     elif targetMeter == 'EPM7000':
-        with open(r'Register_Dictionary_EPM7000.JSON', 'r') as file:
+        with open(r'utilities/Register_Dictionary_EPM7000.json', 'r') as file:
             data = json.load(file)
 
     Value_Holder = []
@@ -27,5 +27,3 @@ def Read_data( targetMeter:str, Data_Value):
     print(x)
     return x
 
-
-Read_data("EPM7000","3 phase watt total")
