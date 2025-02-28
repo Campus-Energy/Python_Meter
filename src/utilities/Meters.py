@@ -80,7 +80,7 @@ class Meter ():
         # try: 
         #     client.connect()
         #     if connection is False:
-        #         raise errors.connectionError("Connection Error")
+        #         raise errors.connectionError("ConnRection Error")
 
         # except errors.connectionError:
         #     print ( "Program failed to connect to meter." )
@@ -101,7 +101,7 @@ class Meter ():
                 #This currently will not work as it does not account for the different lengts of data ( 32 or 16 )
                 case meterType.EPM7000:
                     register = Read_data ('EPM7000', measurement)
-                    client.read_holding_registers ( address = register[0], count = register[1],  )
+                    client.read_holding_registers ( address = register[0], count = register[1] )
                 case meterType.PQMII:
                     registerAddress = Read_data ('PQMII', measurement)
                 case meterType.EPM4500:
@@ -171,7 +171,7 @@ def Read_data( targetMeter:str, Data_Value):
     
 
     #change this to return the list of data in the json entry: address, coils, units, etc.
-    return x
+    # return x
 
 
 def floatConversion(data):
