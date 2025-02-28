@@ -5,6 +5,7 @@ from datetime import datetime
 import os
 import json
 import pandas as pd
+import ipaddress
 
 class meterType(Enum):
     """Type of Meter."""
@@ -74,6 +75,7 @@ class Meter ():
         :return: Returns a tuple, in the following format (connection, client)
         :rtype: (bool, ModbusTcpClient)
         """
+        # IP / Port / Connection time wait before exit
         client = ModbusTcpClient ( self.meter_params.host, port=self.meter_params.port, timeout=1 )
         connection = client.connect()
         
@@ -147,7 +149,7 @@ class Meter ():
         if not connection:
             return "Error, connection not found."
         else:
-            bit32Data = client.read_holding_registers ( address=0x0230, count=4, slave=1 )
+            bit32Data = client.read_holding_registers( address=0x0230, count=4, slave=1 )
             upper16 = bit32Data[0]
             lower16 = bit32Data[1]
 
