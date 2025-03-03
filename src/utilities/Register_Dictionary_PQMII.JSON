@@ -10,6 +10,11 @@
             "Count": 2,
             "Unit": "kwh",
             "Data_Length": 32}],
+        "3 Phase Energy Demand":[{
+            "Register": "0x0404",
+            "Count": 2,
+            "Unit": "kwh",
+            "Data_Length": 32}],
         "Hour/Min":[{
             "Register": "0x230",
             "Count": 1,

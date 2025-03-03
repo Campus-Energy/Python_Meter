@@ -1,6 +1,6 @@
 from datetime import datetime
 
-def currentDatetime():
+def getDatetime():
     #Grabs current datetime
     current_datetime = datetime.now()
 

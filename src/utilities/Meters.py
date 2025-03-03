@@ -2,6 +2,7 @@ from pymodbus.client import ModbusTcpClient
 import dataclasses
 from enum import Enum
 from datetime import datetime
+from utilities import Retrieve_date
 import os
 import json
 import pandas as pd
@@ -102,40 +103,17 @@ class Meter ():
             match ( self.meter_params.meter_type ):
                 #This currently will not work as it does not account for the different lengts of data ( 32 or 16 )
                 case meterType.EPM7000:
-                    register = Read_data ('EPM7000', measurement)
-                    client.read_holding_registers ( address = register[0], count = register[1] )
+                    register_list = Read_data ('EPM7000', measurement)
+                    client.read_holding_registers ( address = register_list[0], count = register_list[1] )
                 case meterType.PQMII:
                     registerAddress = Read_data ('PQMII', measurement)
-                case meterType.EPM4500:
-                    registerAddress = Read_data ('EPM4500', measurement)
+                # case meterType.EPM4500:
+                #     registerAddress = Read_data ('EPM4500', measurement)
             
         
         #for measurement in self.meter_params.measurements:
             #the argument for reading_holding_registers should hold (address, coil, slave)
         return 0 #temporary value to make errors shut up.
-
-    def getDatetime ( self ):
-        """Retrieves the meter's current datetime stored in its internal clock
-
-        :return: The complete datetime in the following format: yy-mm-dd hh:mm
-        :rtype: str
-        
-        .. note:: Todo: Restructure this to compensate for the different addresses for the different meters. Write a function to find the address given the metertype
-        """
-        connection, client = self.connectToMeter ()
-        if not connection:
-            return "Error, connection not found."
-        else:
-            clockAddress = self.getData ( self, 'datetime' )
-            clock = client.read_holding_registers ( address=0x0230, count=4, slave=1 )
-            rawDatetime = clock.registers
-
-            time = uncomplement(rawDatetime[0])
-            date = uncomplement(rawDatetime[2])
-            year = rawDatetime[3]
-
-            datetime = str(year)+'-'+(str(date[0]).zfill(2))+'-'+(str(date[1]).zfill(2)) + ' ' + (str(time[0]).zfill(2))+':'+(str(time[1]).zfill(2))
-            return datetime
 
 
     def bitData32 ( self ):
@@ -160,16 +138,25 @@ class Meter ():
 
             return combined32
     
-def Read_data( targetMeter:str, Data_Value):
-    #make this a match/case statement
-    if targetMeter == 'PQMII':
-        with open(r'Register_Dictionary_PQMII.JSON', 'r') as file:
-            data = json.load(file)
-    elif targetMeter == 'EPM7000':
-        with open(r'Register_Dictionary_EPM7000.JSON', 'r') as file:
-            data = json.load(file)
+def Read_data(targetMeter: str, Data_Value):
+    # Get the directory of the currently running script (main.py)
+    base_dir = Path(__file__).resolve().parent  # This ensures we are referencing the correct directory
 
-    return data["Registers"][Data_Value][0], data["Registers"][Data_Value][1]
+    match targetMeter:
+        case 'PQMII':
+            file_path = base_dir / "utilities/Register_Dictionary_PQMII.JSON"
+        case 'EPM7000':
+            file_path = base_dir / "utilities/Register_Dictionary_EPM7000.JSON"
+        case _:
+            raise ValueError("Invalid targetMeter value")
+
+    if not file_path.exists():  # Check if the file exists before opening
+        raise FileNotFoundError(f"File not found: {file_path}")
+
+    with file_path.open("r") as file:
+        data = json.load(file)
+
+    return data["Registers"][Data_Value][0]["Register"], data["Registers"][Data_Value][0]["Count"]
     
 
     #change this to return the list of data in the json entry: address, coils, units, etc.
@@ -221,14 +208,6 @@ def uncomplement ( twosComplement :str ):
                 
     return [firstByte,secondByte,uncomplementedNum]
 
-def currentDatetime():
-    #Grabs current datetime
-    current_datetime = datetime.now()
-
-    #Formats the datetime into Year-Month-Day Hour-Min-Sec
-    formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
-
-    return formatted_datetime
 
 def add_to_csv(file_path, new_values):
     """
@@ -258,3 +237,30 @@ def add_to_csv(file_path, new_values):
     return df
 
 # PQMII( metername='aloha', metertype=meterType.PQMII ,host = 'host', measurements=['time','kw'], port = 4, addressBook={} )
+
+
+
+
+
+    # def getDatetime ( self ):
+    #     """Retrieves the meter's current datetime stored in its internal clock
+
+    #     :return: The complete datetime in the following format: yy-mm-dd hh:mm
+    #     :rtype: str
+        
+    #     .. note:: Todo: Restructure this to compensate for the different addresses for the different meters. Write a function to find the address given the metertype
+    #     """
+    #     connection, client = self.connectToMeter ()
+    #     if not connection:
+    #         return "Error, connection not found."
+    #     else:
+    #         clockAddress = self.getData ( self, 'datetime' )
+    #         clock = client.read_holding_registers ( address=0x0230, count=4, slave=1 )
+    #         rawDatetime = clock.registers
+
+    #         time = uncomplement(rawDatetime[0])
+    #         date = uncomplement(rawDatetime[2])
+    #         year = rawDatetime[3]
+
+    #         datetime = str(year)+'-'+(str(date[0]).zfill(2))+'-'+(str(date[1]).zfill(2)) + ' ' + (str(time[0]).zfill(2))+':'+(str(time[1]).zfill(2))
+    #         return datetime
