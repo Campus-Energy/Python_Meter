@@ -7,7 +7,6 @@ from pathlib import Path
 import os
 import json
 import pandas as pd
-import ipaddress
 
 class meterType(Enum):
     """Type of Meter."""
@@ -105,12 +104,12 @@ class Meter ():
                 #This currently will not work as it does not account for the different lengts of data ( 32 or 16 )
                 case meterType.EPM7000:
                     registerAddress = Read_data ('EPM7000', measurement)
-                    pulledRegister = client.read_holding_registers ( address = registerAddress[0], count = registerAddress[1] )
+                    pulledRegister = client.read_holding_registers ( address = int(registerAddress[0],16), count = registerAddress[1] )
                     high_low_value = pulledRegister.registers
                     return high_low_value
                 case meterType.PQMII:
                     registerAddress = Read_data ('PQMII', measurement)
-                    pulledRegister = client.read_holding_registers ( address = registerAddress[0], count = registerAddress[1] )
+                    pulledRegister = client.read_holding_registers ( address = int(registerAddress[0],16), count = registerAddress[1] )
                     high_low_value = pulledRegister.registers
                     return high_low_value
                 # case meterType.EPM4500:
@@ -152,9 +151,9 @@ def Read_data(targetMeter: str, Data_Value):
 
     match targetMeter:
         case 'PQMII':
-            file_path = base_dir / "utilities/Register_Dictionary_PQMII.JSON"
+            file_path = base_dir / "Register_Dictionary_PQMII.JSON"
         case 'EPM7000':
-            file_path = base_dir / "utilities/Register_Dictionary_EPM7000.JSON"
+            file_path = base_dir / "Register_Dictionary_EPM7000.JSON"
         case _:
             raise ValueError("Invalid targetMeter value")
 
