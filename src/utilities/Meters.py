@@ -3,6 +3,7 @@ import dataclasses
 from enum import Enum
 from datetime import datetime
 from utilities import Retrieve_date
+from pathlib import Path
 import os
 import json
 import pandas as pd
@@ -103,17 +104,24 @@ class Meter ():
             match ( self.meter_params.meter_type ):
                 #This currently will not work as it does not account for the different lengts of data ( 32 or 16 )
                 case meterType.EPM7000:
-                    register_list = Read_data ('EPM7000', measurement)
-                    client.read_holding_registers ( address = register_list[0], count = register_list[1] )
+                    registerAddress = Read_data ('EPM7000', measurement)
+                    pulledRegister = client.read_holding_registers ( address = registerAddress[0], count = registerAddress[1] )
+                    high_low_value = pulledRegister.registers
+                    return high_low_value
                 case meterType.PQMII:
                     registerAddress = Read_data ('PQMII', measurement)
+                    pulledRegister = client.read_holding_registers ( address = registerAddress[0], count = registerAddress[1] )
+                    high_low_value = pulledRegister.registers
+                    return high_low_value
                 # case meterType.EPM4500:
                 #     registerAddress = Read_data ('EPM4500', measurement)
+                case _:
+                    print("No correct value found")
+
             
         
         #for measurement in self.meter_params.measurements:
             #the argument for reading_holding_registers should hold (address, coil, slave)
-        return 0 #temporary value to make errors shut up.
 
 
     def bitData32 ( self ):
@@ -139,7 +147,7 @@ class Meter ():
             return combined32
     
 def Read_data(targetMeter: str, Data_Value):
-    # Get the directory of the currently running script (main.py)
+    # Get the directory of the currently running script
     base_dir = Path(__file__).resolve().parent  # This ensures we are referencing the correct directory
 
     match targetMeter:
@@ -153,7 +161,7 @@ def Read_data(targetMeter: str, Data_Value):
     if not file_path.exists():  # Check if the file exists before opening
         raise FileNotFoundError(f"File not found: {file_path}")
 
-    with file_path.open("r") as file:
+    with file_path.open("r") as file:   # Open the json
         data = json.load(file)
 
     return data["Registers"][Data_Value][0]["Register"], data["Registers"][Data_Value][0]["Count"]
