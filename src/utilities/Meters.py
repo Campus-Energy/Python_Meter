@@ -143,7 +143,7 @@ class Meter ():
 
             return combined32
         
-        
+    # Combine the epm7000 and pqmII conversions into a single function with match statements to the meterType
     def PQMConversion(data):
         """
         Decodes a value from two PQMII Modbus registers.
