@@ -97,25 +97,23 @@ class Meter ():
 
     def getData ( self ):
         connection, client = self.connectToMeter ()
-
+        holder_list = []
         for measurement in self.meter_params.measurements:
-
             match ( self.meter_params.meter_type ):
                 #This currently will not work as it does not account for the different lengts of data ( 32 or 16 )
                 case meterType.EPM7000:
                     registerAddress = Read_data ('EPM7000', measurement)
                     pulledRegister = client.read_holding_registers ( address = int(registerAddress[0],16), count = registerAddress[1] )
-                    high_low_value = pulledRegister.registers
-                    return high_low_value
+                    holder_list.append(pulledRegister.registers)
                 case meterType.PQMII:
                     registerAddress = Read_data ('PQMII', measurement)
                     pulledRegister = client.read_holding_registers ( address = int(registerAddress[0],16), count = registerAddress[1] )
-                    high_low_value = pulledRegister.registers
-                    return high_low_value
+                    holder_list.append(pulledRegister.registers)
                 # case meterType.EPM4500:
                 #     registerAddress = Read_data ('EPM4500', measurement)
                 case _:
                     print("No correct value found")
+        return holder_list
 
             
         
@@ -144,7 +142,81 @@ class Meter ():
                 combined32 = combined32 - 2^32
 
             return combined32
+        
+        
+    def PQMConversion(data):
+        """
+        Decodes a value from two PQMII Modbus registers.
+
+        Args:
+            data (list): A list of two integers [High_reg, Low_reg] representing the high and low registers.
+
+        Returns:
+            float: The interpreted floating-point value.
+        """
+        #Check PQMII manual for math
+        A = data[0]
+        B = data[1]
+        val = (A*(2**16)) + B
+        if A > 32767:
+            val = val - 2^32
+        #Convert to kw
+        val_kw = val*0.01
+
+        return val_kw
     
+    def floatConversion(data):
+        """
+        epm7000
+        Decodes a floating-point value from two Modbus registers based on the IEEE 754 single-precision format.
+
+        Args:
+            data (list): A list of two integers [High_reg, Low_reg] representing the high and low registers.
+
+        Returns:
+            float: The interpreted floating-point value.
+        """
+        # if len(data) != 2:
+        #     raise ValueError("Input data must be a list with two elements: [R1, R2].")
+
+        # Combine the two registers into a 32-bit integer
+        raw_value = (data[0] << 16) | data[1]
+
+        #Check PQMII manual for the formula
+
+        # Extract sign(1st bit), exponent(next 8 bits), and mantissa(last 23 bits)
+        sign = (raw_value >> 31) & 0x1
+        exponent = (raw_value >> 23) & 0xFF
+        mantissa = raw_value & 0x7FFFFF
+
+        # Calculate the floating-point value ()
+        value = (-1)**sign * 2**(exponent - 127) * (1 + mantissa / (2**23))
+        
+        return value
+
+
+    def intConversions(data):
+        """
+        epm7000
+        Converts a Signed Int32 represented as [x, y] to a decimal value.
+
+        Args:
+            x (int): High 16 bits of the Signed Int32.
+            y (int): Low 16 bits of the Signed Int32.
+
+        Returns:
+            int: The decimal equivalent of the Signed Int32.
+        """
+        # Combine x (high bits) and y (low bits) into a 32-bit value
+        raw_value = (data[0] << 16) | data[1]
+
+        # Check if the number is negative (32-bit signed integer)
+        if combined & 0x80000000:  # If the highest bit is set
+            combined -= 0x100000000  # Convert to negative using two's complement
+
+        return combined
+
+
 def Read_data(targetMeter: str, Data_Value):
     # Get the directory of the currently running script
     base_dir = Path(__file__).resolve().parent  # This ensures we are referencing the correct directory
@@ -164,38 +236,7 @@ def Read_data(targetMeter: str, Data_Value):
         data = json.load(file)
 
     return data["Registers"][Data_Value][0]["Register"], data["Registers"][Data_Value][0]["Count"]
-    
 
-    #change this to return the list of data in the json entry: address, coils, units, etc.
-    # return x
-
-
-def floatConversion(data):
-    """Decodes a floating-point value from two Modbus registers based on the IEEE 754 single-precision format.
-
-        :return: The interpreted floating-point value.
-        :rtype: float
-    """
- 
-
-
-    # if len(data) != 2:
-    #     raise ValueError("Input data must be a list with two elements: [R1, R2].")
-
-    # Combine the two registers into a 32-bit integer
-    raw_value = (data[0] << 16) | data[1]
-
-    #Check PQMII manual for the formula
-
-    # Extract sign(1st bit), exponent(next 8 bits), and mantissa(last 23 bits)
-    sign = (raw_value >> 31) & 0x1
-    exponent = (raw_value >> 23) & 0xFF
-    mantissa = raw_value & 0x7FFFFF
-
-    # Calculate the floating-point value ()
-    value = (-1)**sign * 2**(exponent - 127) * (1 + mantissa / (2**23))
-    
-    return value
 
 #takes in the raw string value from a register and uncomplements them. 
 def uncomplement ( twosComplement :str ):
@@ -242,32 +283,3 @@ def add_to_csv(file_path, new_values):
     df = pd.concat([df, pd.DataFrame([new_values])], ignore_index=True)
 
     return df
-
-# PQMII( metername='aloha', metertype=meterType.PQMII ,host = 'host', measurements=['time','kw'], port = 4, addressBook={} )
-
-
-
-
-
-    # def getDatetime ( self ):
-    #     """Retrieves the meter's current datetime stored in its internal clock
-
-    #     :return: The complete datetime in the following format: yy-mm-dd hh:mm
-    #     :rtype: str
-        
-    #     .. note:: Todo: Restructure this to compensate for the different addresses for the different meters. Write a function to find the address given the metertype
-    #     """
-    #     connection, client = self.connectToMeter ()
-    #     if not connection:
-    #         return "Error, connection not found."
-    #     else:
-    #         clockAddress = self.getData ( self, 'datetime' )
-    #         clock = client.read_holding_registers ( address=0x0230, count=4, slave=1 )
-    #         rawDatetime = clock.registers
-
-    #         time = uncomplement(rawDatetime[0])
-    #         date = uncomplement(rawDatetime[2])
-    #         year = rawDatetime[3]
-
-    #         datetime = str(year)+'-'+(str(date[0]).zfill(2))+'-'+(str(date[1]).zfill(2)) + ' ' + (str(time[0]).zfill(2))+':'+(str(time[1]).zfill(2))
-    #         return datetime
