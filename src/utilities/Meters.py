@@ -97,23 +97,30 @@ class Meter ():
 
     def getData ( self ):
         connection, client = self.connectToMeter ()
-        holder_list = []
+        holder_dict = {}
         for measurement in self.meter_params.measurements:
             match ( self.meter_params.meter_type ):
                 #This currently will not work as it does not account for the different lengts of data ( 32 or 16 )
                 case meterType.EPM7000:
                     registerAddress = Read_data ('EPM7000', measurement)
                     pulledRegister = client.read_holding_registers ( address = int(registerAddress[0],16), count = registerAddress[1] )
-                    holder_list.append(pulledRegister.registers)
+                    holder_dict[measurement] = pulledRegister.registers
                 case meterType.PQMII:
                     registerAddress = Read_data ('PQMII', measurement)
                     pulledRegister = client.read_holding_registers ( address = int(registerAddress[0],16), count = registerAddress[1] )
-                    holder_list.append(pulledRegister.registers)
+                    holder_dict[measurement] = pulledRegister.registers
                 # case meterType.EPM4500:
                 #     registerAddress = Read_data ('EPM4500', measurement)
                 case _:
                     print("No correct value found")
-        return holder_list
+        return holder_dict
+    
+    def dataConversion(self, data_dict):
+        for key in data_dict:
+            match (self.meter_params.meter_type):
+                case meterType.EPM7000:
+                case meterType.PQMII:
+        return
 
             
         
@@ -221,6 +228,7 @@ def Read_data(targetMeter: str, Data_Value):
     # Get the directory of the currently running script
     base_dir = Path(__file__).resolve().parent  # This ensures we are referencing the correct directory
 
+
     match targetMeter:
         case 'PQMII':
             file_path = base_dir / "Register_Dictionary_PQMII.JSON"
@@ -234,6 +242,8 @@ def Read_data(targetMeter: str, Data_Value):
 
     with file_path.open("r") as file:   # Open the json
         data = json.load(file)
+
+    
 
     return data["Registers"][Data_Value][0]["Register"], data["Registers"][Data_Value][0]["Count"]
 
