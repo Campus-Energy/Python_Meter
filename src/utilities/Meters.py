@@ -116,11 +116,16 @@ class Meter ():
         return holder_dict
     
     def dataConversion(self, data_dict):
-        for key in data_dict:
+        # data_dict will be an input of data in the form of:
+        # data_dict =  {"dataValue1": "[[500, 100]]", "dataValue2": "[[100, 200]]"}
+        # "key": "value" format
+        for key, value in data_dict.items():
             match (self.meter_params.meter_type):
                 case meterType.EPM7000:
+                    continue
                 case meterType.PQMII:
-        return
+                    val = PQMConversion()
+        return val
 
             
         
@@ -149,79 +154,79 @@ class Meter ():
                 combined32 = combined32 - 2^32
 
             return combined32
-        
-    # Combine the epm7000 and pqmII conversions into a single function with match statements to the meterType
-    def PQMConversion(data):
-        """
-        Decodes a value from two PQMII Modbus registers.
-
-        Args:
-            data (list): A list of two integers [High_reg, Low_reg] representing the high and low registers.
-
-        Returns:
-            float: The interpreted floating-point value.
-        """
-        #Check PQMII manual for math
-        A = data[0]
-        B = data[1]
-        val = (A*(2**16)) + B
-        if A > 32767:
-            val = val - 2^32
-        #Convert to kw
-        val_kw = val*0.01
-
-        return val_kw
     
-    def floatConversion(data):
-        """
-        epm7000
-        Decodes a floating-point value from two Modbus registers based on the IEEE 754 single-precision format.
+# Combine the epm7000 and pqmII conversions into a single function with match statements to the meterType
+def PQMConversion(data):
+    """
+    Decodes a value from two PQMII Modbus registers.
 
-        Args:
-            data (list): A list of two integers [High_reg, Low_reg] representing the high and low registers.
+    Args:
+        data (list): A list of two integers [High_reg, Low_reg] representing the high and low registers.
 
-        Returns:
-            float: The interpreted floating-point value.
-        """
-        # if len(data) != 2:
-        #     raise ValueError("Input data must be a list with two elements: [R1, R2].")
+    Returns:
+        float: The interpreted floating-point value.
+    """
+    #Check PQMII manual for math
+    A = data[0]
+    B = data[1]
+    val = (A*(2**16)) + B
+    if A > 32767:
+        val = val - 2^32
+    #Convert to kw
+    val_kw = val*0.01
 
-        # Combine the two registers into a 32-bit integer
-        raw_value = (data[0] << 16) | data[1]
+    return val_kw
 
-        #Check PQMII manual for the formula
+def floatConversion(data):
+    """
+    epm7000
+    Decodes a floating-point value from two Modbus registers based on the IEEE 754 single-precision format.
 
-        # Extract sign(1st bit), exponent(next 8 bits), and mantissa(last 23 bits)
-        sign = (raw_value >> 31) & 0x1
-        exponent = (raw_value >> 23) & 0xFF
-        mantissa = raw_value & 0x7FFFFF
+    Args:
+        data (list): A list of two integers [High_reg, Low_reg] representing the high and low registers.
 
-        # Calculate the floating-point value ()
-        value = (-1)**sign * 2**(exponent - 127) * (1 + mantissa / (2**23))
-        
-        return value
+    Returns:
+        float: The interpreted floating-point value.
+    """
+    # if len(data) != 2:
+    #     raise ValueError("Input data must be a list with two elements: [R1, R2].")
+
+    # Combine the two registers into a 32-bit integer
+    raw_value = (data[0] << 16) | data[1]
+
+    #Check PQMII manual for the formula
+
+    # Extract sign(1st bit), exponent(next 8 bits), and mantissa(last 23 bits)
+    sign = (raw_value >> 31) & 0x1
+    exponent = (raw_value >> 23) & 0xFF
+    mantissa = raw_value & 0x7FFFFF
+
+    # Calculate the floating-point value ()
+    value = (-1)**sign * 2**(exponent - 127) * (1 + mantissa / (2**23))
+    
+    return value
 
 
-    def intConversions(data):
-        """
-        epm7000
-        Converts a Signed Int32 represented as [x, y] to a decimal value.
+def intConversions(data):
+    """
+    epm7000
+    Converts a Signed Int32 represented as [x, y] to a decimal value.
 
-        Args:
-            x (int): High 16 bits of the Signed Int32.
-            y (int): Low 16 bits of the Signed Int32.
+    Args:
+        x (int): High 16 bits of the Signed Int32.
+        y (int): Low 16 bits of the Signed Int32.
 
-        Returns:
-            int: The decimal equivalent of the Signed Int32.
-        """
-        # Combine x (high bits) and y (low bits) into a 32-bit value
-        raw_value = (data[0] << 16) | data[1]
+    Returns:
+        int: The decimal equivalent of the Signed Int32.
+    """
+    # Combine x (high bits) and y (low bits) into a 32-bit value
+    raw_value = (data[0] << 16) | data[1]
 
-        # Check if the number is negative (32-bit signed integer)
-        if combined & 0x80000000:  # If the highest bit is set
-            combined -= 0x100000000  # Convert to negative using two's complement
+    # Check if the number is negative (32-bit signed integer)
+    if combined & 0x80000000:  # If the highest bit is set
+        combined -= 0x100000000  # Convert to negative using two's complement
 
-        return combined
+    return combined
 
 
 def Read_data(targetMeter: str, Data_Value):
