@@ -9,7 +9,10 @@ aloha = Meter( metername='POST_CHILLER', metertype=Meters.meterType.PQMII ,host 
 def main():
     #Change to a dictionary here and in meters.py
     #Values will be given in a [high_value,low_value] storage system
-    register_dict = aloha.getData()
+    data_test = {
+        "3 phase real power": [[5000, 100]]
+    }
+    register_dict = aloha.dataConversion()
     
 
 
