@@ -13,13 +13,11 @@ def add_to_csv(file_path, new_values):
     """
 
     cols = []
-    vals = []
 
     cols.append("Datetime")
 
-    for key, value in new_values.items():
+    for key in new_values.keys():
         cols.append(key)
-        vals.append(value)
 
     # Check if the CSV file exists
     if not os.path.exists(file_path):
@@ -32,7 +30,19 @@ def add_to_csv(file_path, new_values):
         df = pd.read_csv(file_path)
 
     # Append the new values as a new row using pd.concat
-    for i in range(vals):
-        df = pd.concat([df, pd.DataFrame([i])], ignore_index=True)
+    df = pd.concat([df, pd.DataFrame(new_values)], ignore_index=True)
+
+    df.to_csv(file_path, index=False)
+
 
     return df
+
+# test_dict = {
+#     "3 phase": [1500],
+#     "3 phase2": [1300],
+#     "3 phase3": [1200],
+#     "3 phase4": [100],
+#     "3 phase5": [200]
+# }
+
+# x = add_to_csv("C:\\Users\\justl\\Desktop\\Code Stuff\\thing.csv",test_dict)
