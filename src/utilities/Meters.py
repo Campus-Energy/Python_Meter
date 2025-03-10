@@ -124,8 +124,8 @@ class Meter ():
                 case meterType.EPM7000:
                     continue
                 case meterType.PQMII:
-                    val = PQMConversion()
-        return val
+                    data_dict[key][0] = PQMConversion(value[0])
+        return data_dict
 
             
         
