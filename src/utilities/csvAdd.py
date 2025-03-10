@@ -1,5 +1,18 @@
 import pandas as pd
 import os
+
+from datetime import datetime
+
+def getDatetime():
+    #Grabs current datetime
+    current_datetime = datetime.now()
+
+    #Formats the datetime into Year-Month-Day Hour-Min-Sec
+    formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+
+    return formatted_datetime
+
+
 def add_to_csv(file_path, new_values):
     """
     Checks if a csv exists at a given location, creates an empty dataframe if it doesn't exist, then appends the argument new_values to the dataframe.
@@ -28,6 +41,8 @@ def add_to_csv(file_path, new_values):
     else:
         # Load the existing DataFrame
         df = pd.read_csv(file_path)
+
+    new_values["Datetime"] = getDatetime()
 
     # Append the new values as a new row using pd.concat
     df = pd.concat([df, pd.DataFrame(new_values)], ignore_index=True)
