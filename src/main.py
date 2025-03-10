@@ -13,8 +13,7 @@ def main():
     #Values will be given in a [high_value,low_value] storage system
     data_test = aloha.getData()
     register_dict = aloha.dataConversion(data_dict=data_test)
-    df = csvAdd.add_to_csv("E:\\MeterDataTest\\thing.csv",register_dict)
-    print(df)
+    csvAdd.add_to_csv("E:\\MeterDataTest\\POST_CHILLER.csv",register_dict)
 
 
 if __name__ == "__main__":

@@ -43,12 +43,9 @@ def add_to_csv(file_path, new_values):
         df = pd.read_csv(file_path)
 
     new_values["Datetime"] = getDatetime()
-
     # Append the new values as a new row using pd.concat
-    df = pd.concat([df, pd.DataFrame(new_values)], ignore_index=True)
-
+    df = pd.concat([df, pd.DataFrame([new_values])], ignore_index=True)
     df.to_csv(file_path, index=False)
-
 
     return df
 
