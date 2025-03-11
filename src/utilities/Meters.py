@@ -114,6 +114,7 @@ class Meter ():
                 #     registerAddress = Read_data ('EPM4500', measurement)
                 case _:
                     print("No correct value found")
+        client.close()
         return holder_dict
     
     def dataConversion ( self, data_dict ):
@@ -128,7 +129,6 @@ class Meter ():
                     data_dict[key] = PQMConversion(value)
         return data_dict
 
-            
         
         #for measurement in self.meter_params.measurements:
             #the argument for reading_holding_registers should hold (address, coil, slave)
