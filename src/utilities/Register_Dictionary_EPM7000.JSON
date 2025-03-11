@@ -1,12 +1,12 @@
 {
     "Registers":{
         "3 phase watt total":[{
-            "Register": "3000",
+            "Register": "1017",
             "Count": 2,
             "Unit": "w",
             "Data_Length": 32}],
-        "Total Watt Hour ":[{
-            "Register": "3032",
+        "Total Watt Hour":[{
+            "Register": "1499",
             "Count": 2,
             "Unit": "wh",
             "Data_Length": 32}],

@@ -123,7 +123,7 @@ class Meter ():
         for key, value in data_dict.items():
             match (self.meter_params.meter_type):
                 case meterType.EPM7000:
-                    continue
+                    data_dict[key] = EPMConverssion(value, key)
                 case meterType.PQMII:
                     data_dict[key] = PQMConversion(value)
         return data_dict
@@ -155,6 +155,16 @@ class Meter ():
                 combined32 = combined32 - 2^32
 
             return combined32
+        
+
+def EPMConverssion(data, measurement):
+    match(measurement):
+        case "3 phase watt total":
+            val = floatConversion(data)
+        case "Total Watt Hour":
+            val = intConversions(data)
+
+    return val
     
 # Combine the epm7000 and pqmII conversions into a single function with match statements to the meterType
 def PQMConversion(data):
