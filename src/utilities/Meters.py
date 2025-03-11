@@ -108,7 +108,7 @@ class Meter ():
                     holder_dict[measurement] = pulledRegister.registers
                 case meterType.PQMII:
                     registerAddress = Read_data ('PQMII', measurement)
-                    pulledRegister = client.read_holding_registers ( address = int(registerAddress[0],16), count = registerAddress[1] )
+                    pulledRegister = client.read_holding_registers ( address = int(registerAddress[0],16), count = registerAddress[1], slave=self.meter_params.slave )
                     holder_dict[measurement] = pulledRegister.registers
                 # case meterType.EPM4500:
                 #     registerAddress = Read_data ('EPM4500', measurement)
