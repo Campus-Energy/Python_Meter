@@ -13,7 +13,7 @@ def getDatetime():
     return formatted_datetime
 
 
-def add_to_csv(file_path, new_values):
+def add_to_csv ( file_path, new_values ):
     """
     Checks if a csv exists at a given location, creates an empty dataframe if it doesn't exist, then appends the argument new_values to the dataframe.
 
@@ -25,8 +25,10 @@ def add_to_csv(file_path, new_values):
         df (dataframe): The new dataframe with the new values added at the end. (allows the df to be assinged to a variable in main() for modifications)
     """
 
+    # Creates a column list to store data value names
     cols = []
 
+    #Add datetime to cols so Datetime is added to the csv if it doesn't exist in the path location
     cols.append("Datetime")
 
     for key in new_values.keys():
@@ -42,13 +44,19 @@ def add_to_csv(file_path, new_values):
         # Load the existing DataFrame
         df = pd.read_csv(file_path)
 
+    # Add current datetime from local machine to the datetime key within the new_values dictionary as a value
     new_values["Datetime"] = getDatetime()
     # Append the new values as a new row using pd.concat
     df = pd.concat([df, pd.DataFrame([new_values])], ignore_index=True)
+
+
+    #Update the csv with the new data (Maybe add it to a different function)
     df.to_csv(file_path, index=False)
 
     return df
 
+
+# For testing
 # test_dict = {
 #     "3 phase": [1500],
 #     "3 phase2": [1300],

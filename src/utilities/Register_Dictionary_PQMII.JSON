@@ -14,17 +14,7 @@
             "Register": "0x0404",
             "Count": 2,
             "Unit": "kwh",
-            "Data_Length": 32}],
-        "Hour/Min":[{
-            "Register": "0x230",
-            "Count": 1,
-            "Unit": "Hour/Min",
-            "Data_Length": 16}],
-        "Month/Day":[{
-            "Register": "0x232",
-            "Count": 1,
-            "Unit": "Month/Day",
-            "Data_Length": 16}]
+            "Data_Length": 32}]
     }
 }
 

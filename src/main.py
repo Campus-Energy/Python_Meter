@@ -13,6 +13,7 @@ POST_MAIN_2 = Meter( metername='POST_MAIN_2', metertype=Meters.meterType.PQMII ,
 
 ADMIN_SERV_2_MAIN_MTR = Meter( metername='ADMIN_SERV_2_MAIN_MTR', metertype=Meters.meterType.EPM7000 ,host = '10.181.5.140', measurements=['3 phase watt total','Total Watt Hour'], port=502,slave=1)
 GARTLEY_HALL_MAIN_MTR = Meter( metername='GARTLEY_HALL_MAIN_MTR', metertype=Meters.meterType.EPM7000 ,host = '10.181.61.130', measurements=['3 phase watt total','Total Watt Hour'], port=502,slave=1)
+# Note:George Hall is a Shark 200
 GEORGE_HALL_MAIN_MTR = Meter( metername='GEORGE_HALL_MAIN_MTR', metertype=Meters.meterType.EPM7000 ,host = '10.181.65.130', measurements=['3 phase watt total','Total Watt Hour'], port=502,slave=1)
 
 

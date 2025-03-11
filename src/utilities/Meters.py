@@ -116,7 +116,7 @@ class Meter ():
                     print("No correct value found")
         return holder_dict
     
-    def dataConversion(self, data_dict):
+    def dataConversion ( self, data_dict ):
         # data_dict will be an input of data in the form of:
         # data_dict =  {"dataValue1": "[[500, 100]]", "dataValue2": "[[100, 200]]"}
         # "key": "value" format
@@ -134,31 +134,31 @@ class Meter ():
             #the argument for reading_holding_registers should hold (address, coil, slave)
 
 
-    def bitData32 ( self ):
-        """Retrieves the two raw 16-bit values from two registers and combines them into a 32-bit data entry.
+    # def bitData32 ( self ):
+    #     """Retrieves the two raw 16-bit values from two registers and combines them into a 32-bit data entry.
 
        
-        :return: The combined 32-bit data from the two corresponding registers
-        :rtype: str
-        """
-        connection, client = self.connectToMeter ()
-        if not connection:
-            return "Error, connection not found."
-        else:
-            bit32Data = client.read_holding_registers( address=0x0230, count=4, slave=1 )
-            upper16 = bit32Data[0]
-            lower16 = bit32Data[1]
+    #     :return: The combined 32-bit data from the two corresponding registers
+    #     :rtype: str
+    #     """
+    #     connection, client = self.connectToMeter ()
+    #     if not connection:
+    #         return "Error, connection not found."
+    #     else:
+    #         bit32Data = client.read_holding_registers( address=0x0230, count=4, slave=1 )
+    #         upper16 = bit32Data[0]
+    #         lower16 = bit32Data[1]
 
-            combined32 = (upper16*2^16) + lower16
+    #         combined32 = (upper16*2^16) + lower16
 
-            if upper16 > 32767:
-                combined32 = combined32 - 2^32
+    #         if upper16 > 32767:
+    #             combined32 = combined32 - 2^32
 
-            return combined32
+    #         return combined32
         
 
-def EPMConverssion(data, measurement):
-    match(measurement):
+def EPMConverssion ( data, measurement ):
+    match ( measurement ):
         case "3 phase watt total":
             val = floatConversion(data)
         case "Total Watt Hour":
@@ -167,7 +167,7 @@ def EPMConverssion(data, measurement):
     return val
     
 # Combine the epm7000 and pqmII conversions into a single function with match statements to the meterType
-def PQMConversion(data):
+def PQMConversion ( data ):
     """
     Decodes a value from two PQMII Modbus registers.
 
@@ -188,7 +188,7 @@ def PQMConversion(data):
 
     return val_kw
 
-def floatConversion(data):
+def floatConversion ( data ):
     """
     epm7000
     Decodes a floating-point value from two Modbus registers based on the IEEE 754 single-precision format.
@@ -218,7 +218,7 @@ def floatConversion(data):
     return value
 
 
-def intConversions(data):
+def intConversions ( data ):
     """
     epm7000
     Converts a Signed Int32 represented as [x, y] to a decimal value.
@@ -240,7 +240,7 @@ def intConversions(data):
     return combined
 
 
-def Read_data(targetMeter: str, Data_Value):
+def Read_data ( targetMeter: str, Data_Value ):
     # Get the directory of the currently running script
     base_dir = Path(__file__).resolve().parent  # This ensures we are referencing the correct directory
 
@@ -264,20 +264,20 @@ def Read_data(targetMeter: str, Data_Value):
     return data["Registers"][Data_Value][0]["Register"], data["Registers"][Data_Value][0]["Count"]
 
 
-#takes in the raw string value from a register and uncomplements them. 
-def uncomplement ( twosComplement :str ):
-    """
-    Takes raw string values stored in two's complement and reinterpets them into a useable format
+# #takes in the raw string value from a register and uncomplements them. 
+# def uncomplement ( twosComplement :str ):
+#     """
+#     Takes raw string values stored in two's complement and reinterpets them into a useable format
 
-    Args:
-        twosComplement (str): A string containing the combined two values of the data registers.
+#     Args:
+#         twosComplement (str): A string containing the combined two values of the data registers.
 
-    Returns:
-        list: [firstByte,secondByte,combined]
-    """
-    twosComplementBinary = format ( abs(~(int(twosComplement) - 1)), '016b' )
-    firstByte = ( int( twosComplementBinary, base = 2 ) & 0b1111111100000000 ) >> 8
-    secondByte = int( twosComplementBinary, base = 2 ) & 0b0000000011111111
-    uncomplementedNum = str( firstByte ) + str ( secondByte )
+#     Returns:
+#         list: [firstByte,secondByte,combined]
+#     """
+#     twosComplementBinary = format ( abs(~(int(twosComplement) - 1)), '016b' )
+#     firstByte = ( int( twosComplementBinary, base = 2 ) & 0b1111111100000000 ) >> 8
+#     secondByte = int( twosComplementBinary, base = 2 ) & 0b0000000011111111
+#     uncomplementedNum = str( firstByte ) + str ( secondByte )
                 
-    return [firstByte,secondByte,uncomplementedNum]
+#     return [firstByte,secondByte,uncomplementedNum]
