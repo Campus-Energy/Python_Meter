@@ -26,17 +26,17 @@ def main():
     csvAdd.add_to_csv("E:\\MeterDataTest\\POST_MAIN_2.csv",register_dict3)
     
     #----------------------------------------------------------------------------------------------------------------
-    ADMIN_SERV_2_MAIN_MTR = Meter( metername='ADMIN_SERV_2_MAIN_MTR', metertype=Meters.meterType.EPM7000 ,host = '10.181.5.140', measurements=['3 phase watt total','Total Watt Hour'], port=502,slave=1)
+    ADMIN_SERV_2_MAIN_MTR = Meter( metername='ADMIN_SERV_2_MAIN_MTR', metertype=Meters.meterType.EPM7000 ,host = '10.181.5.140', measurements=['Total Watt Hour','3 phase watt total'], port=502,slave=1)
     data_test4 = ADMIN_SERV_2_MAIN_MTR.getData()
     register_dict4 = ADMIN_SERV_2_MAIN_MTR.dataConversion(data_dict=data_test4)
     csvAdd.add_to_csv("E:\\MeterDataTest\\ADMIN_SERV_2_MAIN_MTR.csv",register_dict4)
 
-    GARTLEY_HALL_MAIN_MTR = Meter( metername='GARTLEY_HALL_MAIN_MTR', metertype=Meters.meterType.EPM7000 ,host = '10.181.61.130', measurements=['3 phase watt total','Total Watt Hour'], port=502,slave=1)
+    GARTLEY_HALL_MAIN_MTR = Meter( metername='GARTLEY_HALL_MAIN_MTR', metertype=Meters.meterType.EPM7000 ,host = '10.181.61.130', measurements=['Total Watt Hour','3 phase watt total'], port=502,slave=1)
     data_test5 = GARTLEY_HALL_MAIN_MTR.getData()
     register_dict5 = GARTLEY_HALL_MAIN_MTR.dataConversion(data_dict=data_test5)
     csvAdd.add_to_csv("E:\\MeterDataTest\\GARTLEY_HALL_MAIN_MTR.csv",register_dict5)
 
-    GEORGE_HALL_MAIN_MTR = Meter( metername='GEORGE_HALL_MAIN_MTR', metertype=Meters.meterType.EPM7000 ,host = '10.181.65.130', measurements=['3 phase watt total','Total Watt Hour'], port=502,slave=1)
+    GEORGE_HALL_MAIN_MTR = Meter( metername='GEORGE_HALL_MAIN_MTR', metertype=Meters.meterType.EPM7000 ,host = '10.181.65.130', measurements=['Total Watt Hour','3 phase watt total'], port=502,slave=1)
     data_test6 = GEORGE_HALL_MAIN_MTR.getData()
     register_dict6 = GEORGE_HALL_MAIN_MTR.dataConversion(data_dict=data_test6)
     csvAdd.add_to_csv("E:\\MeterDataTest\\GEORGE_HALL_MAIN_MTR.csv",register_dict6)
