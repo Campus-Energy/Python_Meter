@@ -104,7 +104,7 @@ class Meter ():
                 #This currently will not work as it does not account for the different lengts of data ( 32 or 16 )
                 case meterType.EPM7000:
                     registerAddress = Read_data ('EPM7000', measurement)
-                    pulledRegister = client.read_holding_registers ( address = int(registerAddress[0],16), count = registerAddress[1] )
+                    pulledRegister = client.read_holding_registers ( address = int(registerAddress[0]), count = registerAddress[1] )
                     holder_dict[measurement] = pulledRegister.registers
                 case meterType.PQMII:
                     registerAddress = Read_data ('PQMII', measurement)
@@ -231,7 +231,7 @@ def intConversions ( data ):
         int: The decimal equivalent of the Signed Int32.
     """
     # Combine x (high bits) and y (low bits) into a 32-bit value
-    raw_value = (data[0] << 16) | data[1]
+    combined = (data[0] << 16) | data[1]
 
     # Check if the number is negative (32-bit signed integer)
     if combined & 0x80000000:  # If the highest bit is set
