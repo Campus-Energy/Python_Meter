@@ -1,0 +1,202 @@
+CAMPUS_CTR_MAIN_MTR: Error occurred: getaddrinfo() argument 1 must be string or None
+Traceback (most recent call last):
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\main.py", line 39, in main
+    rawData = currentMeter.getData()
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\utilities\Meters.py", line 100, in getData
+    connection, client = self.connectToMeter ()
+                         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\utilities\Meters.py", line 82, in connectToMeter
+    connection = client.connect()
+                 ^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\client\tcp.py", line 190, in connect
+    self.socket = socket.create_connection(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2544.0_x64__qbz5n2kfra8p0\Lib\socket.py", line 841, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2544.0_x64__qbz5n2kfra8p0\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: getaddrinfo() argument 1 must be string or None
+
+HIG_SUBSTATION_1_MAIN_MTR: Error occurred: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+Traceback (most recent call last):
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\main.py", line 39, in main
+    rawData = currentMeter.getData()
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\utilities\Meters.py", line 111, in getData
+    pulledRegister = client.read_holding_registers ( address = int(registerAddress[0],16), count = registerAddress[1], slave=self.meter_params.slave )
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\client\mixin.py", line 114, in read_holding_registers
+    return self.execute(no_response_expected, pdu_reg.ReadHoldingRegistersRequest(address=address, count=count, dev_id=slave))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\client\base.py", line 203, in execute
+    return self.transaction.sync_execute(no_response_expected, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\transaction\transaction.py", line 124, in sync_execute
+    raise ModbusIOException(txt)
+pymodbus.exceptions.ModbusIOException: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+
+HIG_SUBSTATION_2_MAIN_MTR: Error occurred: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+Traceback (most recent call last):
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\main.py", line 39, in main
+    rawData = currentMeter.getData()
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\utilities\Meters.py", line 111, in getData
+    pulledRegister = client.read_holding_registers ( address = int(registerAddress[0],16), count = registerAddress[1], slave=self.meter_params.slave )
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\client\mixin.py", line 114, in read_holding_registers
+    return self.execute(no_response_expected, pdu_reg.ReadHoldingRegistersRequest(address=address, count=count, dev_id=slave))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\client\base.py", line 203, in execute
+    return self.transaction.sync_execute(no_response_expected, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\transaction\transaction.py", line 124, in sync_execute
+    raise ModbusIOException(txt)
+pymodbus.exceptions.ModbusIOException: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+
+HIG_SUBSTATION_3_MAIN_MTR: Error occurred: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+Traceback (most recent call last):
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\main.py", line 39, in main
+    rawData = currentMeter.getData()
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\utilities\Meters.py", line 111, in getData
+    pulledRegister = client.read_holding_registers ( address = int(registerAddress[0],16), count = registerAddress[1], slave=self.meter_params.slave )
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\client\mixin.py", line 114, in read_holding_registers
+    return self.execute(no_response_expected, pdu_reg.ReadHoldingRegistersRequest(address=address, count=count, dev_id=slave))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\client\base.py", line 203, in execute
+    return self.transaction.sync_execute(no_response_expected, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\transaction\transaction.py", line 124, in sync_execute
+    raise ModbusIOException(txt)
+pymodbus.exceptions.ModbusIOException: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+
+HPER_KLUM_GYM_MTR: Error occurred: Modbus Error: [Connection] Failed to connect[ModbusTcpClient 10.181.21.140:502]
+Traceback (most recent call last):
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\main.py", line 39, in main
+    rawData = currentMeter.getData()
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\utilities\Meters.py", line 107, in getData
+    pulledRegister = client.read_holding_registers ( address = int(registerAddress[0]), count = registerAddress[1] )
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\client\mixin.py", line 114, in read_holding_registers
+    return self.execute(no_response_expected, pdu_reg.ReadHoldingRegistersRequest(address=address, count=count, dev_id=slave))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\client\base.py", line 202, in execute
+    raise ConnectionException(f"Failed to connect[{self!s}]")
+pymodbus.exceptions.ConnectionException: Modbus Error: [Connection] Failed to connect[ModbusTcpClient 10.181.21.140:502]
+
+HOLMES_HALL_MAIN_A_MTR: Error occurred: getaddrinfo() argument 1 must be string or None
+Traceback (most recent call last):
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\main.py", line 39, in main
+    rawData = currentMeter.getData()
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\utilities\Meters.py", line 100, in getData
+    connection, client = self.connectToMeter ()
+                         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\utilities\Meters.py", line 82, in connectToMeter
+    connection = client.connect()
+                 ^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\client\tcp.py", line 190, in connect
+    self.socket = socket.create_connection(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2544.0_x64__qbz5n2kfra8p0\Lib\socket.py", line 841, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2544.0_x64__qbz5n2kfra8p0\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: getaddrinfo() argument 1 must be string or None
+
+HOLMES_HALL_MAIN_B_MTR : Error occurred: getaddrinfo() argument 1 must be string or None
+Traceback (most recent call last):
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\main.py", line 39, in main
+    rawData = currentMeter.getData()
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\utilities\Meters.py", line 100, in getData
+    connection, client = self.connectToMeter ()
+                         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\utilities\Meters.py", line 82, in connectToMeter
+    connection = client.connect()
+                 ^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\client\tcp.py", line 190, in connect
+    self.socket = socket.create_connection(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2544.0_x64__qbz5n2kfra8p0\Lib\socket.py", line 841, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2544.0_x64__qbz5n2kfra8p0\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: getaddrinfo() argument 1 must be string or None
+
+KOREAN_STUDIES_MAIN_MTR: Error occurred: Modbus Error: [Connection] Failed to connect[ModbusTcpClient 10.181.221.140:502]
+Traceback (most recent call last):
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\main.py", line 39, in main
+    rawData = currentMeter.getData()
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\utilities\Meters.py", line 107, in getData
+    pulledRegister = client.read_holding_registers ( address = int(registerAddress[0]), count = registerAddress[1] )
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\client\mixin.py", line 114, in read_holding_registers
+    return self.execute(no_response_expected, pdu_reg.ReadHoldingRegistersRequest(address=address, count=count, dev_id=slave))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\client\base.py", line 202, in execute
+    raise ConnectionException(f"Failed to connect[{self!s}]")
+pymodbus.exceptions.ConnectionException: Modbus Error: [Connection] Failed to connect[ModbusTcpClient 10.181.221.140:502]
+
+LES_MURAKAMI_STADIUM_CONSESS_MTR: Error occurred: getaddrinfo() argument 1 must be string or None
+Traceback (most recent call last):
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\main.py", line 39, in main
+    rawData = currentMeter.getData()
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\utilities\Meters.py", line 100, in getData
+    connection, client = self.connectToMeter ()
+                         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\utilities\Meters.py", line 82, in connectToMeter
+    connection = client.connect()
+                 ^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\client\tcp.py", line 190, in connect
+    self.socket = socket.create_connection(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2544.0_x64__qbz5n2kfra8p0\Lib\socket.py", line 841, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2544.0_x64__qbz5n2kfra8p0\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: getaddrinfo() argument 1 must be string or None
+
+PBRC_MAIN_A_MTR: Error occurred: Modbus Error: [Connection] Failed to connect[ModbusTcpClient 10.181.245.130:502]
+Traceback (most recent call last):
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\main.py", line 39, in main
+    rawData = currentMeter.getData()
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\utilities\Meters.py", line 107, in getData
+    pulledRegister = client.read_holding_registers ( address = int(registerAddress[0]), count = registerAddress[1] )
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\client\mixin.py", line 114, in read_holding_registers
+    return self.execute(no_response_expected, pdu_reg.ReadHoldingRegistersRequest(address=address, count=count, dev_id=slave))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\client\base.py", line 202, in execute
+    raise ConnectionException(f"Failed to connect[{self!s}]")
+pymodbus.exceptions.ConnectionException: Modbus Error: [Connection] Failed to connect[ModbusTcpClient 10.181.245.130:502]
+
+SAUNDERS_HALL_MAIN_A_MTR: Error occurred: Modbus Error: [Connection] Failed to connect[ModbusTcpClient 10.181.129.129:502]
+Traceback (most recent call last):
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\main.py", line 39, in main
+    rawData = currentMeter.getData()
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Admin\Documents\GitHub\Python_Meter\src\utilities\Meters.py", line 111, in getData
+    pulledRegister = client.read_holding_registers ( address = int(registerAddress[0],16), count = registerAddress[1], slave=self.meter_params.slave )
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\client\mixin.py", line 114, in read_holding_registers
+    return self.execute(no_response_expected, pdu_reg.ReadHoldingRegistersRequest(address=address, count=count, dev_id=slave))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Documents\GitHub\Python_Meter\.venv\Lib\site-packages\pymodbus\client\base.py", line 202, in execute
+    raise ConnectionException(f"Failed to connect[{self!s}]")
+pymodbus.exceptions.ConnectionException: Modbus Error: [Connection] Failed to connect[ModbusTcpClient 10.181.129.129:502]
+
