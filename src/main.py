@@ -8,9 +8,9 @@ import traceback
 
 
 
+
 def main():
     # Values will be given in a [high_value,low_value] storage system
-
     base_dir = Path(__file__).resolve().parent  # This ensures we are referencing the correct directory
     deet = pd.read_csv(base_dir / "config/Meter Deets.csv")
 
@@ -43,7 +43,7 @@ def main():
         # except TypeError:
         #     continue
         except Exception as e:
-            error_message = f"[{rawData}] {meterName}: Error occurred: {str(e)}\n{traceback.format_exc()}"
+            error_message = f"[{csvAdd.getDatetime()}] {meterName}: Error occurred: {str(e)}"
             with open("errors.txt", "a") as file:
                 file.write(error_message + "\n")
 
