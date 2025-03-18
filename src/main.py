@@ -43,7 +43,7 @@ def main():
         # except TypeError:
         #     continue
         except Exception as e:
-            error_message = f"{meterName}: Error occurred: {str(e)}\n{traceback.format_exc()}"
+            error_message = f"[{rawData}] {meterName}: Error occurred: {str(e)}\n{traceback.format_exc()}"
             with open("errors.txt", "a") as file:
                 file.write(error_message + "\n")
 
