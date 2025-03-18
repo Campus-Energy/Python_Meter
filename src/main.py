@@ -2,14 +2,29 @@ from utilities.Meters import Meter
 from utilities import Meters
 from utilities import Read_json
 from utilities import csvAdd
+from utilities.read_deets import readMeterDeets
 from pathlib import Path
 import pandas as pd
 
 
 
 def main():
-    #Change to a dictionary here and in meters.py
     # Values will be given in a [high_value,low_value] storage system
+
+    base_dir = Path(__file__).resolve().parent  # This ensures we are referencing the correct directory
+    deet = pd.read_csv(base_dir / "config/Meter Deets.csv")
+
+
+    for i in range(len(deet)):
+        meterName, meterType, ipAddress, slaveID, Measurements = readMeterDeets(deet, i)
+        currentMeter = Meter(metername=meterName,metertype=meterType, host=ipAddress,measurements=Measurements,port=502,slave=slaveID)
+        rawData = currentMeter.getData()
+        dataValueDictionary = currentMeter.dataConversion(data_dict=rawData)
+        pathToSave = f"E:\\MeterDataTest\\{meterName}.csv"
+        csvAdd.add_to_csv(pathToSave, dataValueDictionary)
+        
+
+
     POST_CHILLER_PLANT_MAIN = Meter( metername='POST_CHILLER_PLANT_MAIN', metertype=Meters.meterType.PQMII ,host = '10.181.185.135', measurements=['3 Phase Positive Real Energy Used','3 phase real power'], port=502,slave=1)
     data_test1 = POST_CHILLER_PLANT_MAIN.getData()
     register_dict1 = POST_CHILLER_PLANT_MAIN.dataConversion(data_dict=data_test1)
