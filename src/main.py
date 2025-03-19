@@ -14,10 +14,14 @@ def main():
     base_dir = Path(__file__).resolve().parent  # This ensures we are referencing the correct directory
     deet = pd.read_csv(base_dir / "config/Meter Deets.csv")
 
+    # Replaces any spaces in the column names with an underscore
     deet.columns = deet.columns.str.replace(" ", "_").str.replace("-", "_")
 
+    # Using itertuples for speed as we're not changing anything within meter_deets
     for row in deet.itertuples(index=False):
         meterType = row.METER_TYPE
+        # Pull data from columns depending on meter type
+        # Change/Add string values in the JSON in the list "Measurements" to change/add a new measurement
         match meterType:
             case "PQM2":
                 meterName = row.METER_NAME
@@ -33,15 +37,19 @@ def main():
                 meterType = Meters.meterType.EPM7000
             case _:
                 continue
-        print(meterName)
+        # print(meterName)
         try:
+            # Creates the Meter class for the current meter iteration
             currentMeter = Meter(metername=meterName,metertype=meterType,host=ipAddress,measurements=Measurements,port=502,slave=modbusID)
+            # Grab the data and assign it to a rawData varaible. (Is a dictionary)
             rawData = currentMeter.getData()     
+            # Apply data conversions to convert the high/low register values into a decimal kw/kwh
             dataValueDictionary = currentMeter.dataConversion(data_dict=rawData)
+            # Create a path to E drive of the workstation with the csv named as the meterName
             pathToSave = f"E:\\MeterDataTest\\{meterName}.csv"
+            # Save the csv
             csvAdd.add_to_csv(pathToSave, dataValueDictionary)
-        # except TypeError:
-        #     continue
+        # Create an error log when any error is thrown (location is in the "Python meter" folder, one parent above the src folder)
         except Exception as e:
             error_message = f"[{csvAdd.getDatetime()}] {meterName}: Error occurred: {str(e)}"
             with open("errors.txt", "a") as file:
@@ -49,6 +57,7 @@ def main():
 
             
 
+    # Manual creation of meter classes for testing specific meters
 
     # HIG_SUBSTATION_1_MAIN_MTR = Meter( metername='HIG_SUBSTATION_1_MAIN_MTR', metertype=Meters.meterType.PQMII ,host = '10.181.77.130', measurements=['3 Phase Positive Real Energy Used','3 phase real power'], port=502,slave=1)
     # data_test1 = HIG_SUBSTATION_1_MAIN_MTR.getData()
