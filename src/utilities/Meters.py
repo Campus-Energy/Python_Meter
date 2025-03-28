@@ -122,7 +122,7 @@ class Meter ():
                 case meterType.EPM7000:
                     data_dict[key] = EPMConversion(value, key)
                 case meterType.PQMII:
-                    data_dict[key] = PQMConversion(value)
+                    data_dict[key] = PQMConversion(value, key)
         return data_dict
 
         
