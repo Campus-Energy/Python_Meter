@@ -124,7 +124,7 @@ class Meter ():
         for key, value in data_dict.items():
             match (self.meter_params.meter_type):
                 case meterType.EPM7000:
-                    data_dict[key] = EPMConverssion(value, key)
+                    data_dict[key] = EPMConversion(value, key)
                 case meterType.PQMII:
                     data_dict[key] = PQMConversion(value)
         return data_dict
@@ -157,7 +157,7 @@ class Meter ():
     #         return combined32
         
 
-def EPMConverssion ( data, measurement ):
+def EPMConversion ( data, measurement ):
     match ( measurement ):
         case "3 phase watt total":
             val = floatConversion(data)
@@ -165,9 +165,18 @@ def EPMConverssion ( data, measurement ):
             val = intConversions(data)
 
     return val
+
+def PQMConversion ( data, measurement ):
+    match ( measurement ):
+        case "3 phase real power":
+            val = PQMConversionkW(data)
+        case "3 Phase Positive Real Energy Used":
+            val = PQMConversionkWh(data)
+
+    return val
     
 # Combine the epm7000 and pqmII conversions into a single function with match statements to the meterType
-def PQMConversion ( data ):
+def PQMConversionkW ( data ):
     """
     Decodes a value from two PQMII Modbus registers.
 
@@ -187,6 +196,27 @@ def PQMConversion ( data ):
     val_kw = val*0.01
 
     return val_kw
+
+def PQMConversionkWh ( data ):
+    """
+    Decodes a value from two PQMII Modbus registers.
+
+    Args:
+        data (list): A list of two integers [High_reg, Low_reg] representing the high and low registers.
+
+    Returns:
+        float: The interpreted floating-point value.
+    """
+    #Check PQMII manual for math
+    A = data[0]
+    B = data[1]
+    val = (A*(2**16)) + B
+    if A > 32767:
+        val = val - 2^32
+    #Convert to kw
+    val_kWh = val
+
+    return val_kWh
 
 def floatConversion ( data ):
     """

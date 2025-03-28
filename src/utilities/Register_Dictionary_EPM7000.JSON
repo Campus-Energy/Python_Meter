@@ -6,7 +6,7 @@
             "Unit": "w",
             "Data_Length": 32}],
         "Total Watt Hour":[{
-            "Register": "1499",
+            "Register": "1505",
             "Count": 2,
             "Unit": "wh",
             "Data_Length": 32}]
