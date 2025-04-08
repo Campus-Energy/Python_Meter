@@ -1,6 +1,6 @@
+# Imports
 import pandas as pd
 import os
-
 from datetime import datetime
 
 def getDatetime():
@@ -54,15 +54,3 @@ def add_to_csv ( file_path, new_values ):
     df.to_csv(file_path, index=False)
 
     return df
-
-
-# For testing
-# test_dict = {
-#     "3 phase": [1500],
-#     "3 phase2": [1300],
-#     "3 phase3": [1200],
-#     "3 phase4": [100],
-#     "3 phase5": [200]
-# }
-
-# x = add_to_csv("C:\\Users\\justl\\Desktop\\Code Stuff\\thing.csv",test_dict)

@@ -1,13 +1,6 @@
 import json
 
 
-# Open and read the JSON file
-# with open(r'Register_Dictionary_EPM7000.JSON', 'r') as file:
-#     data = json.load(file)
-
-# # Print the data
-# print(data["Registers"]["3 phase watt total"][0]["Register"])
-
 def Read_data( targetMeter:str, Data_Value):
     #make this a match/case statement
     if targetMeter == 'PQMII':

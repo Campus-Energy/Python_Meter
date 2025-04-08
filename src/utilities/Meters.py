@@ -1,3 +1,4 @@
+# Imports
 from pymodbus.client import ModbusTcpClient
 import utilities
 import dataclasses
@@ -62,8 +63,6 @@ class Meter ():
                 measurements = measurements,
                 host = host,
                 port = port,
-                #thinking of using a Json to hold all the register addresses.
-                #code will load the Json and use that to retrieve data.
                 slave = slave
             )
     
@@ -76,14 +75,6 @@ class Meter ():
         # IP / Port / Connection time wait before exit
         client = ModbusTcpClient ( self.meter_params.host, port=self.meter_params.port, timeout=1 )
         connection = client.connect()
-        
-        # try: 
-        #     client.connect()
-        #     if connection is False:
-        #         raise errors.connectionError("ConnRection Error")
-
-        # except errors.connectionError:
-        #     print ( "Program failed to connect to meter." )
 
         if connection:
             print ( "Connection sucessful!" )
@@ -110,6 +101,7 @@ class Meter ():
                 #     registerAddress = Read_data ('EPM4500', measurement)
                 case _:
                     print("No correct value found")
+        # Close the client connection
         client.close()
         return holder_dict
     
@@ -125,33 +117,7 @@ class Meter ():
                     data_dict[key] = PQMConversion(value, key)
         return data_dict
 
-        
-        #for measurement in self.meter_params.measurements:
-            #the argument for reading_holding_registers should hold (address, coil, slave)
 
-
-    # def bitData32 ( self ):
-    #     """Retrieves the two raw 16-bit values from two registers and combines them into a 32-bit data entry.
-
-       
-    #     :return: The combined 32-bit data from the two corresponding registers
-    #     :rtype: str
-    #     """
-    #     connection, client = self.connectToMeter ()
-    #     if not connection:
-    #         return "Error, connection not found."
-    #     else:
-    #         bit32Data = client.read_holding_registers( address=0x0230, count=4, slave=1 )
-    #         upper16 = bit32Data[0]
-    #         lower16 = bit32Data[1]
-
-    #         combined32 = (upper16*2^16) + lower16
-
-    #         if upper16 > 32767:
-    #             combined32 = combined32 - 2^32
-
-    #         return combined32
-        
 
 def EPMConversion ( data, measurement ):
     match ( measurement ):
@@ -225,8 +191,6 @@ def floatConversion ( data ):
     Returns:
         float: The interpreted floating-point value.
     """
-    # if len(data) != 2:
-    #     raise ValueError("Input data must be a list with two elements: [R1, R2].")
 
     # Combine the two registers into a 32-bit integer
     raw_value = (data[0] << 16) | data[1]
@@ -288,22 +252,3 @@ def Read_data ( targetMeter: str, Data_Value ):
     
 
     return data["Registers"][Data_Value][0]["Register"], data["Registers"][Data_Value][0]["Count"]
-
-
-# #takes in the raw string value from a register and uncomplements them. 
-# def uncomplement ( twosComplement :str ):
-#     """
-#     Takes raw string values stored in two's complement and reinterpets them into a useable format
-
-#     Args:
-#         twosComplement (str): A string containing the combined two values of the data registers.
-
-#     Returns:
-#         list: [firstByte,secondByte,combined]
-#     """
-#     twosComplementBinary = format ( abs(~(int(twosComplement) - 1)), '016b' )
-#     firstByte = ( int( twosComplementBinary, base = 2 ) & 0b1111111100000000 ) >> 8
-#     secondByte = int( twosComplementBinary, base = 2 ) & 0b0000000011111111
-#     uncomplementedNum = str( firstByte ) + str ( secondByte )
-                
-#     return [firstByte,secondByte,uncomplementedNum]
