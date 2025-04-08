@@ -1,7 +1,5 @@
 # Imports
-from utilities.Meters import Meter
 from utilities import Meters
-from utilities import Read_json
 from utilities import csvAdd
 from pathlib import Path
 import pandas as pd
@@ -41,7 +39,7 @@ def main():
         # print(meterName)
         try:
             # Creates the Meter class for the current meter iteration
-            currentMeter = Meter(metername=meterName,metertype=meterType,host=ipAddress,measurements=Measurements,port=502,slave=modbusID)
+            currentMeter = Meters.Meter(metername=meterName,metertype=meterType,host=ipAddress,measurements=Measurements,port=502,slave=modbusID)
             # Grab the data and assign it to a rawData varaible. (Is a dictionary)
             rawData = currentMeter.getData()     
             # Apply data conversions to convert the high/low register values into a decimal kw/kwh
