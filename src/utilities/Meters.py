@@ -153,7 +153,7 @@ def PQMConversionkW ( data ):
     B = data[1]
     val = (A*(2**16)) + B
     if A > 32767:
-        val = val - 2^32
+        val = val - 2**32
     #Convert to kw
     val_kw = val*0.01
 
@@ -174,7 +174,7 @@ def PQMConversionkWh ( data ):
     B = data[1]
     val = (A*(2**16)) + B
     if A > 32767:
-        val = val - 2^32
+        val = val - 2**32
     #Convert to kw
     val_kWh = val
 
