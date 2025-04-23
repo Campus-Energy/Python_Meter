@@ -3,7 +3,6 @@ from utilities import Meters
 from utilities import csvAdd
 from pathlib import Path
 import pandas as pd
-import traceback
 
 # Change the measurement list to whatever values you want. (Will need different menthod of implementation if user interaction is desired)
 
@@ -41,7 +40,7 @@ def main():
             # Creates the Meter class for the current meter iteration
             currentMeter = Meters.Meter(metername=meterName,metertype=meterType,host=ipAddress,measurements=Measurements,port=502,slave=modbusID)
             # Grab the data and assign it to a rawData varaible. (Is a dictionary)
-            rawData = currentMeter.getData()     
+            rawData = currentMeter.getData()
             # Apply data conversions to convert the high/low register values into a decimal kw/kwh
             dataValueDictionary = currentMeter.dataConversion(data_dict=rawData)
             # Create a path to E drive of the workstation with the csv named as the meterName
