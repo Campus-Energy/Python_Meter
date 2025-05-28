@@ -4,53 +4,33 @@ import os
 from datetime import datetime
 
 def getDatetime():
-    #Grabs current datetime
-    current_datetime = datetime.now()
-
-    #Formats the datetime into Year-Month-Day Hour-Min-Sec
-    formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
-
-    return formatted_datetime
-
-
-def add_to_csv ( file_path, new_values ):
     """
-    Checks if a csv exists at a given location, creates an empty dataframe if it doesn't exist, then appends the argument new_values to the dataframe.
+    Returns the current local datetime as a formatted string.
+    Format: YYYY-MM-DD HH:MM:SS
+    """
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
+def add_to_csv(file_path, new_values):
+    """
+    Efficiently appends a new row of values to a CSV.
+    Adds a 'Datetime' field to the dictionary automatically.
+    If the file does not exist, it creates it with headers.
 
     Args:
-        file_path (string): A string that tells the function where the csv is.
-        new_values (dictionary): A dictionary of values with key values corresponding to the dataframe column names (Can be changed when csv format is decided)
+        file_path (str): Path to the CSV file.
+        new_values (dict): Dictionary of column_name: value pairs.
 
     Returns:
-        df (dataframe): The new dataframe with the new values added at the end. (allows the df to be assinged to a variable in main() for modifications)
+        DataFrame: The single-row DataFrame that was appended.
     """
-
-    # Creates a column list to store data value names
-    cols = []
-
-    #Add datetime to cols so Datetime is added to the csv if it doesn't exist in the path location
-    cols.append("Datetime")
-
-    for key in new_values.keys():
-        cols.append(key)
-
-    # Check if the CSV file exists
-    if not os.path.exists(file_path):
-        # Create an empty DataFrame with the specified columns if the file doesn't exist (Format of csv isn't decided yet)
-        df = pd.DataFrame(columns=cols)
-        df.to_csv(file_path, index=False)
-        # print(f"File '{file_path}' did not exist. Created an empty CSV file.")
-    else:
-        # Load the existing DataFrame
-        df = pd.read_csv(file_path)
-
-    # Add current datetime from local machine to the datetime key within the new_values dictionary as a value
+    # Add timestamp
     new_values["Datetime"] = getDatetime()
-    # Append the new values as a new row using pd.concat
-    df = pd.concat([df, pd.DataFrame([new_values])], ignore_index=True)
 
+    # Create a DataFrame with one row
+    df_new = pd.DataFrame([new_values])
 
-    #Update the csv with the new data (Maybe add it to a different function)
-    df.to_csv(file_path, index=False)
+    # Append to CSV (with headers only if the file doesn't exist)
+    df_new.to_csv(file_path, mode='a', header=not os.path.exists(file_path), index=False)
 
-    return df
+    return df_new
