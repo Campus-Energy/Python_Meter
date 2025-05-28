@@ -5,6 +5,7 @@ from pathlib import Path
 from datetime import date, timedelta
 import pandas as pd
 import os
+import time
 
 
 
@@ -64,4 +65,7 @@ def main():
 
 
 if __name__ == "__main__":
+    start = time.time()
     main()
+    end = time.time()
+    print(f"{end - start:.4f} seconds")
