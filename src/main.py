@@ -7,13 +7,6 @@ import pandas as pd
 import os
 
 
-# Change the measurement list to whatever values you want. (Will need different menthod of implementation if user interaction is desired)
-
-def add_to_csv(path, data_dict):
-    df_new = pd.DataFrame([data_dict])
-    
-    # Use append mode ('a') and only write header if file doesn't exist
-    df_new.to_csv(path, mode='a', header=not os.path.exists(path), index=False)
 
 
 def main():
@@ -57,12 +50,12 @@ def main():
             start_of_week = today - timedelta(days=today.weekday()) # Uses monday as the first day of the week
 
             folder_path = Path(f"E:/MeterDataTest/{meterName}")
-            folder_path.makedirs(parents=True, exist_ok=True)  # Make sure folder exists
+            os.makedirs(folder_path, exist_ok=True)  # Make sure folder exists
 
             # Create a path to E drive of the workstation with the csv named as the meterName
             pathToSave = folder_path / f"{start_of_week}_{meterName}.csv"
             # Save the csv
-            add_to_csv(pathToSave, dataValueDictionary)
+            csvAdd.add_to_csv(pathToSave, dataValueDictionary)
         # Create an error log when any error is thrown (location is in the "Python meter" folder, one parent above the src folder)
         except Exception as e:
             error_message = f"[{csvAdd.getDatetime()}] {meterName}: Error occurred: {str(e)}"
