@@ -5,9 +5,9 @@ from pathlib import Path
 from datetime import date, timedelta
 import pandas as pd
 import os
-import time
 
 
+# Change the measurement list to whatever values you want. (Will need different menthod of implementation if user interaction is desired)
 
 
 def main():
@@ -51,7 +51,7 @@ def main():
             start_of_week = today - timedelta(days=today.weekday()) # Uses monday as the first day of the week
 
             folder_path = Path(f"E:/MeterDataTest/{meterName}")
-            os.makedirs(folder_path, exist_ok=True)  # Make sure folder exists
+            folder_path.makedirs(parents=True, exist_ok=True)  # Make sure folder exists
 
             # Create a path to E drive of the workstation with the csv named as the meterName
             pathToSave = folder_path / f"{start_of_week}_{meterName}.csv"
@@ -65,7 +65,4 @@ def main():
 
 
 if __name__ == "__main__":
-    start = time.time()
     main()
-    end = time.time()
-    print(f"{end - start:.4f} seconds")
