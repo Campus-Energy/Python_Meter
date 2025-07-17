@@ -9,7 +9,7 @@ import time
 
 
 
-
+""" Main Topic 1 """
 def main():
     # Values will be given in a [high_value,low_value] storage system
     base_dir = Path(__file__).resolve().parent  # This ensures we are referencing the correct directory
@@ -24,12 +24,14 @@ def main():
         # Pull data from columns depending on meter type
         # Change/Add string values in the JSON in the list "Measurements" to change/add a new measurement
         match meterType:
+            #2b
             case "PQM2":
                 meterName = row.METER_NAME
                 ipAddress = row.MULTINET_ADDRESS
                 modbusID = int(row.MODBUS_ID)
                 Measurements = ['3 Phase Positive Real Energy Used','3 phase real power']
                 meterType = Meters.meterType.PQMII
+            #2a
             case "GE EPM 7000":
                 meterName = row.METER_NAME
                 ipAddress = row.IP_ADDRESS
@@ -39,6 +41,7 @@ def main():
             case _:
                 continue
         # print(meterName)
+        # 3c
         try:
             # Creates the Meter class for the current meter iteration
             currentMeter = Meters.Meter(metername=meterName,metertype=meterType,host=ipAddress,measurements=Measurements,port=502,slave=modbusID)
@@ -59,6 +62,7 @@ def main():
             csvAdd.add_to_csv(pathToSave, dataValueDictionary)
         # Create an error log when any error is thrown (location is in the "Python meter" folder, one parent above the src folder)
         except Exception as e:
+            # 1a
             error_message = f"[{csvAdd.getDatetime()}] {meterName}: Error occurred: {str(e)}"
             with open("errors.txt", "a") as file:
                 file.write(error_message + "\n")

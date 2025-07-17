@@ -125,7 +125,6 @@ def EPMConversion ( data, measurement ):
             val = floatConversion(data)
         case "Total Watt Hour":
             val = intConversions(data)
-
     return val
 
 def PQMConversion ( data, measurement ):
@@ -134,7 +133,6 @@ def PQMConversion ( data, measurement ):
             val = PQMConversionkW(data)
         case "3 Phase Positive Real Energy Used":
             val = PQMConversionkWh(data)
-
     return val
     
 # Combine the epm7000 and pqmII conversions into a single function with match statements to the meterType
@@ -148,16 +146,11 @@ def PQMConversionkW ( data ):
     Returns:
         float: The interpreted floating-point value.
     """
-    #Check PQMII manual for math
-    A = data[0]
-    B = data[1]
-    val = (A*(2**16)) + B
+    A, B = data
+    val = (A << 16) + B
     if A > 32767:
-        val = val - 2**32
-    #Convert to kw
-    val_kw = val*0.01
-
-    return val_kw
+        val -= 2**32
+    return val * 0.01
 
 def PQMConversionkWh ( data ):
     """
@@ -170,15 +163,11 @@ def PQMConversionkWh ( data ):
         float: The interpreted floating-point value.
     """
     #Check PQMII manual for math
-    A = data[0]
-    B = data[1]
-    val = (A*(2**16)) + B
+    A, B = data
+    val = (A << 16) + B
     if A > 32767:
-        val = val - 2**32
-    #Convert to kw
-    val_kWh = val
-
-    return val_kWh
+        val -= 2**32
+    return val
 
 def floatConversion ( data ):
     """
@@ -191,21 +180,13 @@ def floatConversion ( data ):
     Returns:
         float: The interpreted floating-point value.
     """
-
-    # Combine the two registers into a 32-bit integer
-    raw_value = (data[0] << 16) | data[1]
-
     #Check PQMII manual for the formula
+    raw = (data[0] << 16) | data[1]
+    sign = (raw >> 31) & 0x1
+    exponent = (raw >> 23) & 0xFF
+    mantissa = raw & 0x7FFFFF
 
-    # Extract sign(1st bit), exponent(next 8 bits), and mantissa(last 23 bits)
-    sign = (raw_value >> 31) & 0x1
-    exponent = (raw_value >> 23) & 0xFF
-    mantissa = raw_value & 0x7FFFFF
-
-    # Calculate the floating-point value ()
-    value = (-1)**sign * 2**(exponent - 127) * (1 + mantissa / (2**23))
-    
-    return value
+    return (-1)**sign * 2**(exponent - 127) * (1 + mantissa / (2**23))
 
 
 def intConversions ( data ):
@@ -220,13 +201,9 @@ def intConversions ( data ):
     Returns:
         int: The decimal equivalent of the Signed Int32.
     """
-    # Combine x (high bits) and y (low bits) into a 32-bit value
     combined = (data[0] << 16) | data[1]
-
-    # Check if the number is negative (32-bit signed integer)
-    if combined & 0x80000000:  # If the highest bit is set
-        combined -= 0x100000000  # Convert to negative using two's complement
-
+    if combined & 0x80000000:
+        combined -= 0x100000000
     return combined
 
 
