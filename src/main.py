@@ -69,7 +69,23 @@ def main():
 
 
 if __name__ == "__main__":
-    start = time.time()
-    main()
-    end = time.time()
-    print(f"{end - start:.4f} seconds")
+    # start = time.time()
+    # main()
+    # end = time.time()
+    # print(f"{end - start:.4f} seconds")
+    while True:
+        start = time.time()
+        try:
+            main()
+        except Exception as e:
+            # Catch any unexpected crash at the script level
+            error_message = f"[{csvAdd.getDatetime()}] Script-level error: {str(e)}"
+            with open("errors.txt", "a") as file:
+                file.write(error_message + "\n")
+        end = time.time()
+        elapsed = end - start
+        print(f"Execution took {elapsed:.2f} seconds")
+
+        # Wait so it runs every 60 seconds total
+        sleep_time = max(0, 60 - elapsed)
+        time.sleep(sleep_time)
