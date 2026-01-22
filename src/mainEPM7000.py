@@ -25,12 +25,12 @@ def main():
         # Change/Add string values in the JSON in the list "Measurements" to change/add a new measurement
         match meterType:
             #2b
-            case "PQM2":
-                meterName = row.METER_NAME
-                ipAddress = row.MULTINET_ADDRESS
-                modbusID = int(row.MODBUS_ID)
-                Measurements = ['3 Phase Positive Real Energy Used','3 phase real power']
-                meterType = Meters.meterType.PQMII
+            # case "PQM2":
+            #     meterName = row.METER_NAME
+            #     ipAddress = row.MULTINET_ADDRESS
+            #     modbusID = int(row.MODBUS_ID)
+            #     Measurements = ['3 Phase Positive Real Energy Used','3 phase real power']
+            #     meterType = Meters.meterType.PQMII
             #2a
             case "GE EPM 7000":
                 meterName = row.METER_NAME
@@ -53,7 +53,7 @@ def main():
             today = date.today()
             start_of_week = today - timedelta(days=today.weekday()) # Uses monday as the first day of the week
 
-            folder_path = Path(f"E:/MeterDataTest/{meterName}")
+            folder_path = Path(f"C://Users//Admin//Documents//MeterDataTest//{meterName}")
             os.makedirs(folder_path, exist_ok=True)  # Make sure folder exists
 
             # Create a path to E drive of the workstation with the csv named as the meterName

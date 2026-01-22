@@ -73,7 +73,7 @@ class Meter ():
         :rtype: (bool, ModbusTcpClient)
         """
         # IP / Port / Connection time wait before exit
-        client = ModbusTcpClient ( self.meter_params.host, port=self.meter_params.port, timeout=1, retries=1)
+        client = ModbusTcpClient ( self.meter_params.host, port=self.meter_params.port, timeout=1, retries=0)
         connection = client.connect()
 
         if connection:
